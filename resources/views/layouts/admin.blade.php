@@ -1,3 +1,4 @@
+```blade
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -12,11 +13,13 @@
     @stack('styles')
 </head>
 
-
 <body class="bg-[#f7f8fc] text-slate-800">
 
 <div
-    x-data="{ sidebarOpen: false }"
+    x-data="{
+        sidebarOpen: false,
+        organizationOpen: {{ request()->routeIs('admin.organization.*') ? 'true' : 'false' }}
+    }"
     class="min-h-screen"
 >
 
@@ -46,6 +49,7 @@
             lg:translate-x-0"
         :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
+
 
         {{-- ===================================================== --}}
         {{-- SIDEBAR HEADER --}}
@@ -121,13 +125,16 @@
             <div class="space-y-1">
 
 
+                {{-- ================================================= --}}
                 {{-- DASHBOARD --}}
+                {{-- ================================================= --}}
 
                 <a
                     href="{{ route('admin.dashboard') }}"
                     class="flex items-center gap-3 rounded-lg
                         px-4 py-3 text-sm text-white/90
-                        transition hover:bg-white/10"
+                        transition hover:bg-white/10
+                        {{ request()->routeIs('admin.dashboard') ? 'bg-white/10 text-white' : '' }}"
                 >
 
                     <svg
@@ -136,14 +143,12 @@
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                     >
-
                         <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="1.8"
                             d="M3 10.5L12 3l9 7.5M5.5 9.5V21h13V9.5M9 21v-6h6v6"
                         />
-
                     </svg>
 
                     <span>Dashboard</span>
@@ -151,14 +156,17 @@
                 </a>
 
 
+                {{-- ================================================= --}}
                 {{-- ACCOUNT REQUESTS --}}
+                {{-- ================================================= --}}
 
                 <a
                     href="{{ route('admin.account-requests.index') }}"
                     class="flex items-center justify-between
                         rounded-lg px-4 py-3 text-sm
                         text-white/90 transition
-                        hover:bg-white/10"
+                        hover:bg-white/10
+                        {{ request()->routeIs('admin.account-requests.*') ? 'bg-white/10 text-white' : '' }}"
                 >
 
                     <span class="flex items-center gap-3">
@@ -214,13 +222,16 @@
                 </a>
 
 
+                {{-- ================================================= --}}
                 {{-- MEMBERS --}}
+                {{-- ================================================= --}}
 
                 <a
                     href="{{ route('admin.members.index') }}"
                     class="flex items-center gap-3 rounded-lg
                         px-4 py-3 text-sm text-white/90
-                        transition hover:bg-white/10"
+                        transition hover:bg-white/10
+                        {{ request()->routeIs('admin.members.*') ? 'bg-white/10 text-white' : '' }}"
                 >
 
                     <svg
@@ -244,7 +255,9 @@
                 </a>
 
 
+                {{-- ================================================= --}}
                 {{-- DIOCESAN OFFICERS --}}
+                {{-- ================================================= --}}
 
                 <a
                     href="#"
@@ -258,35 +271,131 @@
                 </a>
 
 
-                {{-- VICARIATES --}}
+                {{-- ================================================= --}}
+                {{-- ORGANIZATION --}}
+                {{-- ================================================= --}}
 
-                <a
-                    href="#"
-                    class="flex items-center gap-3 rounded-lg
-                        px-4 py-3 text-sm text-white/90
-                        transition hover:bg-white/10"
-                >
-
-                    <span>Vicariates</span>
-
-                </a>
+                <div class="space-y-1">
 
 
-                {{-- UNITS --}}
+                    {{-- ORGANIZATION HEADER --}}
 
-                <a
-                    href="#"
-                    class="flex items-center gap-3 rounded-lg
-                        px-4 py-3 text-sm text-white/90
-                        transition hover:bg-white/10"
-                >
+                    <button
+                        type="button"
+                        @click="organizationOpen = !organizationOpen"
+                        class="flex w-full items-center
+                            justify-between rounded-lg
+                            px-4 py-3 text-sm
+                            text-white/90 transition
+                            hover:bg-white/10
+                            {{ request()->routeIs('admin.organization.*') ? 'bg-white/10 text-white' : '' }}"
+                    >
 
-                    <span>Units</span>
+                        <span class="flex items-center gap-3">
 
-                </a>
+                            {{-- ORGANIZATION ICON --}}
+
+                            <svg
+                                class="h-5 w-5 text-[#F4D77D]"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"
+                                />
+
+                            </svg>
+
+                            <span>Organization</span>
+
+                        </span>
 
 
+                        {{-- ARROW --}}
+
+                        <svg
+                            class="h-4 w-4 text-white/60 transition-transform duration-200"
+                            :class="organizationOpen ? 'rotate-180' : ''"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="m6 9 6 6 6-6"
+                            />
+
+                        </svg>
+
+                    </button>
+
+
+                    {{-- ORGANIZATION SUBMENU --}}
+
+                    <div
+                        x-show="organizationOpen"
+                        x-collapse
+                        class="ml-5 space-y-1 border-l border-white/10 pl-3"
+                    >
+
+
+                        {{-- VICARIATES --}}
+
+                        <a
+                            href="{{ route('admin.organization.vicariates.index') }}"
+                            class="flex items-center gap-3 rounded-lg
+                                px-4 py-2.5 text-sm
+                                text-white/75 transition
+                                hover:bg-white/10 hover:text-white
+                                {{ request()->routeIs('admin.organization.vicariates.*') ? 'bg-white/10 text-white' : '' }}"
+                        >
+
+                            <span
+                                class="h-1.5 w-1.5 rounded-full
+                                bg-[#F4D77D]"
+                            ></span>
+
+                            <span>Vicariates</span>
+
+                        </a>
+
+
+                        {{-- UNITS --}}
+
+                        <a
+                            href="{{ route('admin.organization.units.index') }}"
+                            class="flex items-center gap-3 rounded-lg
+                                px-4 py-2.5 text-sm
+                                text-white/75 transition
+                                hover:bg-white/10 hover:text-white
+                                {{ request()->routeIs('admin.organization.units.*') ? 'bg-white/10 text-white' : '' }}"
+                        >
+
+                            <span
+                                class="h-1.5 w-1.5 rounded-full
+                                bg-[#F4D77D]"
+                            ></span>
+
+                            <span>Units</span>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                {{-- ================================================= --}}
                 {{-- MEETING RECORDS --}}
+                {{-- ================================================= --}}
 
                 <a
                     href="#"
@@ -300,7 +409,9 @@
                 </a>
 
 
+                {{-- ================================================= --}}
                 {{-- MINUTES --}}
+                {{-- ================================================= --}}
 
                 <a
                     href="#"
@@ -314,7 +425,9 @@
                 </a>
 
 
+                {{-- ================================================= --}}
                 {{-- FINANCIAL REPORTS --}}
+                {{-- ================================================= --}}
 
                 <a
                     href="#"
@@ -328,7 +441,9 @@
                 </a>
 
 
+                {{-- ================================================= --}}
                 {{-- REPORTS --}}
+                {{-- ================================================= --}}
 
                 <a
                     href="#"
@@ -342,7 +457,9 @@
                 </a>
 
 
+                {{-- ================================================= --}}
                 {{-- SETTINGS --}}
+                {{-- ================================================= --}}
 
                 <a
                     href="{{ route('settings') }}"
@@ -513,7 +630,6 @@
 
                     {{-- ================================================= --}}
                     {{-- ADMIN PROFILE --}}
-                    {{-- SAME STYLE AS MEMBER --}}
                     {{-- ================================================= --}}
 
                     <div
@@ -603,10 +719,7 @@
                             style="display: none;"
                         >
 
-
-                            {{-- ================================================= --}}
                             {{-- PROFILE HEADER --}}
-                            {{-- ================================================= --}}
 
                             <div
                                 class="border-b border-slate-200
@@ -617,7 +730,6 @@
                                     class="px-6 pb-5 pt-6
                                     text-center"
                                 >
-
 
                                     {{-- CENTER PFP --}}
 
@@ -674,9 +786,7 @@
                                 </div>
 
 
-                                {{-- ================================================= --}}
                                 {{-- ADMIN INFORMATION --}}
-                                {{-- ================================================= --}}
 
                                 <div class="px-5 pb-5">
 
@@ -775,9 +885,7 @@
                             </div>
 
 
-                            {{-- ================================================= --}}
                             {{-- ACCOUNT SETTINGS --}}
-                            {{-- ================================================= --}}
 
                             <div class="p-2">
 
@@ -1012,9 +1120,7 @@
                             </div>
 
 
-                            {{-- ================================================= --}}
                             {{-- SIGN OUT --}}
-                            {{-- ================================================= --}}
 
                             <div
                                 class="border-t border-slate-200 p-2"
@@ -1088,46 +1194,48 @@
 
                 </div>
 
-            </header>
+            </div>
+
+        </header>
 
 
-            {{-- ========================================================= --}}
-            {{-- PAGE CONTENT --}}
-            {{-- ========================================================= --}}
+        {{-- ========================================================= --}}
+        {{-- PAGE CONTENT --}}
+        {{-- ========================================================= --}}
 
-            <main
-                class="min-h-[calc(100vh-76px)]
-                px-5 py-7 sm:px-7 lg:px-8"
-            >
+        <main
+            class="min-h-[calc(100vh-76px)]
+            px-5 py-7 sm:px-7 lg:px-8"
+        >
 
-                @yield('content')
+            @yield('content')
 
-            </main>
+        </main>
 
 
-            {{-- ========================================================= --}}
-            {{-- FOOTER --}}
-            {{-- ========================================================= --}}
+        {{-- ========================================================= --}}
+        {{-- FOOTER --}}
+        {{-- ========================================================= --}}
 
-            <footer
-                class="border-t border-slate-200
-                bg-white px-5 py-7
-                text-center sm:px-7 lg:px-8"
-            >
+        <footer
+            class="border-t border-slate-200
+            bg-white px-5 py-7
+            text-center sm:px-7 lg:px-8"
+        >
 
-                <p class="text-[11px] text-slate-400">
-                    CWL Diocese of Imus · Organizational Records
-                    and Transparency Management System
-                </p>
+            <p class="text-[11px] text-slate-400">
+                CWL Diocese of Imus · Organizational Records
+                and Transparency Management System
+            </p>
 
-            </footer>
-
-        </div>
+        </footer>
 
     </div>
 
+</div>
 
-    @stack('scripts')
+
+@stack('scripts')
 
 </body>
 

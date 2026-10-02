@@ -24,18 +24,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Authenticate User
-        |--------------------------------------------------------------------------
-        */
-
         $request->authenticate();
 
         $request->session()->regenerate();
 
         $user = $request->user();
-
 
         /*
         |--------------------------------------------------------------------------
@@ -47,32 +40,29 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-
         /*
         |--------------------------------------------------------------------------
-        | ACCOUNT APPROVAL
+        | APPROVAL CHECK
         |--------------------------------------------------------------------------
-        |
-        | Only approved users may enter the system.
-        |
         */
 
         if ($user->status !== 'approved') {
 
             Auth::guard('web')->logout();
 
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
             return redirect()
                 ->route('login')
                 ->withErrors([
-                    'email' =>
-                        'Your account is still waiting for administrator approval.',
+                    'email' => 'Your account is still waiting for administrator approval.',
                 ]);
         }
 
-
         /*
         |--------------------------------------------------------------------------
-        | DIOCESAN USERS
+        | DIOCESAN
         |--------------------------------------------------------------------------
         */
 
@@ -81,59 +71,37 @@ class AuthenticatedSessionController extends Controller
             return match ($user->position) {
 
                 'president' =>
-                    redirect()->route(
-                        'diocesan.president.dashboard'
-                    ),
+                    redirect()->route('diocesan.president.dashboard'),
 
-                'first_vice_president' =>
-                    redirect()->route(
-                        'diocesan.vice-president-1.dashboard'
-                    ),
+                'vice_president_1' =>
+                    redirect()->route('diocesan.vice-president-1.dashboard'),
 
-                'second_vice_president' =>
-                    redirect()->route(
-                        'diocesan.vice-president-2.dashboard'
-                    ),
+                'vice_president_2' =>
+                    redirect()->route('diocesan.vice-president-2.dashboard'),
 
                 'secretary' =>
-                    redirect()->route(
-                        'diocesan.secretary.dashboard'
-                    ),
+                    redirect()->route('diocesan.secretary.dashboard'),
 
                 'assistant_secretary' =>
-                    redirect()->route(
-                        'diocesan.assistant-secretary.dashboard'
-                    ),
+                    redirect()->route('diocesan.assistant-secretary.dashboard'),
 
                 'treasurer' =>
-                    redirect()->route(
-                        'diocesan.treasurer.dashboard'
-                    ),
-
-                'assistant_treasurer' =>
-                    redirect()->route(
-                        'diocesan.assistant-treasurer.dashboard'
-                    ),
+                    redirect()->route('diocesan.treasurer.dashboard'),
 
                 'auditor' =>
-                    redirect()->route(
-                        'diocesan.auditor.dashboard'
-                    ),
+                    redirect()->route('diocesan.auditor.dashboard'),
 
-                'dbm' =>
-                    redirect()->route(
-                        'diocesan.board-member.dashboard'
-                    ),
+                'board_member' =>
+                    redirect()->route('diocesan.board-member.dashboard'),
 
                 default =>
-                    $this->invalidOrganizationPosition(),
+                    redirect()->route('member.dashboard'),
             };
         }
 
-
         /*
         |--------------------------------------------------------------------------
-        | VICARIATE USERS
+        | VICARIATE
         |--------------------------------------------------------------------------
         */
 
@@ -142,24 +110,19 @@ class AuthenticatedSessionController extends Controller
             return match ($user->position) {
 
                 'president' =>
-                    redirect()->route(
-                        'vicariate.president.dashboard'
-                    ),
+                    redirect()->route('vicariate.president.dashboard'),
 
-                'supervisor' =>
-                    redirect()->route(
-                        'vicariate.supervisor.dashboard'
-                    ),
+                'board_member' =>
+                    redirect()->route('vicariate.board-member.dashboard'),
 
                 default =>
-                    $this->invalidOrganizationPosition(),
+                    redirect()->route('member.dashboard'),
             };
         }
 
-
         /*
         |--------------------------------------------------------------------------
-        | UNIT USERS
+        | UNIT
         |--------------------------------------------------------------------------
         */
 
@@ -168,76 +131,27 @@ class AuthenticatedSessionController extends Controller
             return match ($user->position) {
 
                 'president' =>
-                    redirect()->route(
-                        'unit.president.dashboard'
-                    ),
-
-                'vice_president' =>
-                    redirect()->route(
-                        'unit.vice-president.dashboard'
-                    ),
-
-                'secretary' =>
-                    redirect()->route(
-                        'unit.secretary.dashboard'
-                    ),
-
-                'assistant_secretary' =>
-                    redirect()->route(
-                        'unit.assistant-secretary.dashboard'
-                    ),
-
-                'treasurer' =>
-                    redirect()->route(
-                        'unit.treasurer.dashboard'
-                    ),
-
-                'auditor' =>
-                    redirect()->route(
-                        'unit.auditor.dashboard'
-                    ),
+                    redirect()->route('unit.president.dashboard'),
 
                 'board_member' =>
-                    redirect()->route(
-                        'unit.board-member.dashboard'
-                    ),
+                    redirect()->route('unit.board-member.dashboard'),
 
                 'member' =>
-                    redirect()->route(
-                        'member.dashboard'
-                    ),
+                    redirect()->route('member.dashboard'),
 
                 default =>
-                    $this->invalidOrganizationPosition(),
+                    redirect()->route('member.dashboard'),
             };
         }
 
-
         /*
         |--------------------------------------------------------------------------
-        | INVALID ORGANIZATION
+        | FALLBACK
         |--------------------------------------------------------------------------
         */
 
-        return $this->invalidOrganizationPosition();
+        return redirect()->route('member.dashboard');
     }
-
-
-    /**
-     * Handle invalid organizational information.
-     */
-    private function invalidOrganizationPosition(): RedirectResponse
-    {
-        Auth::guard('web')->logout();
-
-        return redirect()
-            ->route('login')
-            ->withErrors([
-                'email' =>
-                    'Your account has an invalid organizational position. Please contact the administrator.',
-            ]);
-    }
-
 
     /**
      * Destroy an authenticated session.
@@ -247,9 +161,8 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 }

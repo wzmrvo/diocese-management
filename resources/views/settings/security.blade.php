@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
 
     <div
         x-data="{ sidebarOpen: false }"
@@ -1125,4 +1125,4 @@
 
     </div>
 
-</x-app-layout>
+</x-admin-layout>

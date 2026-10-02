@@ -4,26 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Validation\Rules\Password as PasswordRule;
+use Illuminate\Validation\Rules\Password;
 
 class SettingsController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Settings Dashboard
+    | SETTINGS INDEX
     |--------------------------------------------------------------------------
     */
 
     public function index()
     {
-        return view('settings.index');
+        return redirect()->route('settings.profile');
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Profile Settings
+    | PROFILE
     |--------------------------------------------------------------------------
     */
 
@@ -35,7 +34,7 @@ class SettingsController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Update Profile
+    | UPDATE PROFILE
     |--------------------------------------------------------------------------
     */
 
@@ -56,30 +55,32 @@ class SettingsController extends Controller
                 'max:255',
             ],
 
+            'username' => [
+                'nullable',
+                'string',
+                'max:255',
+                'unique:users,username,' . $user->id,
+            ],
+
             'email' => [
                 'required',
-                'string',
                 'email',
                 'max:255',
                 'unique:users,email,' . $user->id,
             ],
         ]);
 
-        $user->first_name = $validated['first_name'];
-        $user->last_name = $validated['last_name'];
-        $user->email = $validated['email'];
-
-        $user->save();
+        $user->update($validated);
 
         return redirect()
             ->route('settings.profile')
-            ->with('success', 'Your personal information has been updated successfully.');
+            ->with('success', 'Profile information updated successfully.');
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Security Settings
+    | SECURITY
     |--------------------------------------------------------------------------
     */
 
@@ -91,13 +92,13 @@ class SettingsController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Update Password
+    | UPDATE PASSWORD
     |--------------------------------------------------------------------------
     */
 
     public function updatePassword(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'current_password' => [
                 'required',
                 'current_password',
@@ -106,25 +107,28 @@ class SettingsController extends Controller
             'password' => [
                 'required',
                 'confirmed',
-                PasswordRule::defaults(),
+                Password::defaults(),
             ],
         ]);
 
-        $user = $request->user();
-
-        $user->password = Hash::make($request->password);
-
-        $user->save();
+        $request->user()->update([
+            'password' => Hash::make(
+                $validated['password']
+            ),
+        ]);
 
         return redirect()
             ->route('settings.security')
-            ->with('success', 'Your password has been updated successfully.');
+            ->with(
+                'success',
+                'Password updated successfully.'
+            );
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Organization Information
+    | ORGANIZATION
     |--------------------------------------------------------------------------
     */
 
@@ -136,7 +140,7 @@ class SettingsController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Account Information
+    | ACCOUNT
     |--------------------------------------------------------------------------
     */
 
