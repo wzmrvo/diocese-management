@@ -4,17 +4,28 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name' => 'System Administrator',
-            'email' => 'admin@diocese.test',
-            'password' => Hash::make('Admin123!'),
-            'role' => 'admin',
-        ]);
+        User::updateOrCreate(
+            [
+                'email' => 'admin@diocese.test',
+            ],
+            [
+                'name' => 'System Administrator',
+                'password' => 'Admin123!',
+                'role' => 'admin',
+                'status' => 'approved',
+
+                'member_type' => 'Admin',
+                'organization_level' => 'Admin',
+                'position' => 'Admin',
+                'contact_number' => null,
+                'vicariate_id' => null,
+                'unit_id' => null,
+            ]
+        );
     }
 }

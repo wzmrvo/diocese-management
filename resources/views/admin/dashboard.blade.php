@@ -18,10 +18,6 @@
     |--------------------------------------------------------------------------
     | USER STATISTICS
     |--------------------------------------------------------------------------
-    |
-    | Approved members = actual members
-    | Pending members  = account requests waiting for approval
-    |
     */
 
     if (Schema::hasTable('users')) {
@@ -64,6 +60,7 @@
     $recentRequests = collect();
 
     if (Schema::hasTable('users')) {
+
         $recentRequests = \App\Models\User::where('role', 'member')
             ->where('status', 'pending')
             ->latest()
@@ -77,80 +74,48 @@
 {{-- WELCOME HERO --}}
 {{-- ========================================================= --}}
 
-<section class="relative mb-5 min-h-[175px] overflow-hidden rounded-xl border border-stone-200 bg-[#f3f1e8] shadow-sm">
+<section class="relative mb-6 min-h-[190px] overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm">
 
-    {{-- Background --}}
-    <div class="absolute inset-0 bg-gradient-to-r from-[#f5f2e8] via-[#f4f2ea] to-[#e9e8de]"></div>
+    {{-- Royal Blue Background Accent --}}
+    <div class="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-[#102A72]/10 to-transparent"></div>
 
+    {{-- Decorative Gold Circle --}}
+    <div class="absolute -right-16 -top-20 h-56 w-56 rounded-full border-[18px] border-[#D4AF37]/20"></div>
 
-    {{-- Church decoration --}}
-    <div class="absolute bottom-0 right-0 hidden opacity-[0.11] sm:block">
+    <div class="absolute -bottom-24 right-24 h-44 w-44 rounded-full border-[10px] border-[#D4AF37]/10"></div>
 
-        <svg
-            width="470"
-            height="180"
-            viewBox="0 0 470 180"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
+    {{-- Decorative Royal Blue Shape --}}
+    <div class="absolute bottom-0 right-0 h-full w-2 bg-[#102A72]"></div>
 
-            <path
-                d="M285 180V86L315 63V180M315 63L330 48L345 63V180M330 48V20M325 25L330 20L335 25M250 180V108L270 95L290 108V180M215 180V105L250 78L285 105V180"
-                stroke="#174638"
-                stroke-width="3"
-            />
+    {{-- Welcome Content --}}
+    <div class="relative z-10 flex min-h-[190px] items-center px-7 py-8 sm:px-9">
 
-            <path
-                d="M195 180V130L215 115L235 130V180M345 180V105L365 115V180M365 115L405 140V180M405 140L430 153V180"
-                stroke="#174638"
-                stroke-width="3"
-            />
+        <div class="max-w-2xl">
 
-            <path
-                d="M170 180V145L195 130M430 180V153"
-                stroke="#174638"
-                stroke-width="3"
-            />
+            <div class="flex items-center gap-2">
 
-            <path
-                d="M245 180V145C245 134 253 125 263 125C273 125 281 134 281 145V180"
-                stroke="#174638"
-                stroke-width="3"
-            />
+                <span class="h-2 w-2 rounded-full bg-[#D4AF37]"></span>
 
-            <path
-                d="M315 180V128C315 118 322 110 330 110C338 110 345 118 345 128V180"
-                stroke="#174638"
-                stroke-width="3"
-            />
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#102A72]">
+                    Administrator Portal
+                </p>
 
-        </svg>
+            </div>
 
-    </div>
-
-
-    {{-- Welcome text --}}
-    <div class="relative z-10 flex h-full items-center px-7 py-7 sm:px-8">
-
-        <div class="max-w-xl">
-
-            <p class="text-sm font-medium text-[#174638]/70">
-                Welcome back,
-            </p>
-
-            <h2 class="mt-1 font-serif text-3xl font-semibold leading-tight text-[#123e31] sm:text-[34px]">
-                {{ Auth::user()->name }}
+            <h2 class="mt-2 text-3xl font-semibold leading-tight text-[#102A72] sm:text-[36px]">
+                Welcome back, {{ Auth::user()->name }}
             </h2>
 
-            <p class="mt-2 max-w-lg text-sm leading-6 text-[#31554b]">
+            <p class="mt-3 max-w-xl text-sm leading-6 text-slate-600">
                 Here's what's happening across the
-                <span class="font-medium">
-                    CWL Diocese of Imus
+                <span class="font-semibold text-[#102A72]">
+                    Catholic Women's League Diocese of Imus
                 </span>
                 system today.
             </p>
 
-            <div class="mt-4 h-1 w-12 rounded-full bg-[#d8a92e]"></div>
+            {{-- Gold Accent --}}
+            <div class="mt-5 h-1 w-14 rounded-full bg-[#D4AF37]"></div>
 
         </div>
 
@@ -159,12 +124,11 @@
 </section>
 
 
-
 {{-- ========================================================= --}}
 {{-- DASHBOARD GRID --}}
 {{-- ========================================================= --}}
 
-<div class="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
+<div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_350px]">
 
 
     {{-- ========================================================= --}}
@@ -178,105 +142,168 @@
         {{-- STAT CARDS --}}
         {{-- ===================================================== --}}
 
-        <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
 
 
             {{-- PENDING REQUESTS --}}
-            <div class="rounded-xl border border-[#e7d49a] bg-[#fffaf0] p-5 shadow-sm">
+            <div class="rounded-2xl border border-[#D4AF37]/40 bg-white p-5 shadow-sm">
 
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#f8e9bd] text-[#a87812]">
-                    <span class="text-lg">👥</span>
+                <div class="flex items-center justify-between">
+
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#FFF8E5]">
+
+                        <svg
+                            class="h-5 w-5 text-[#B08A18]"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.8"
+                                d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"
+                            />
+                        </svg>
+
+                    </div>
+
+                    @if($pendingRequests > 0)
+
+                        <span class="rounded-full bg-[#FFF1CC] px-2.5 py-1 text-[10px] font-semibold text-[#9A7615]">
+                            Action needed
+                        </span>
+
+                    @endif
+
                 </div>
 
-                <p class="mt-4 text-xs font-medium text-[#174638]">
+                <p class="mt-5 text-xs font-medium text-slate-500">
                     Pending Account Requests
                 </p>
 
-                <p class="mt-1 text-3xl font-semibold text-[#123e31]">
+                <p class="mt-1 text-3xl font-semibold text-[#102A72]">
                     {{ $pendingRequests }}
                 </p>
 
                 <a
                     href="{{ route('admin.account-requests.index') }}"
-                    class="mt-4 inline-flex items-center gap-1 text-xs font-medium text-[#9a741b] transition hover:text-[#174638]"
+                    class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-[#102A72] transition hover:text-[#B08A18]"
                 >
-                    View requests
+                    Review requests
                     <span>→</span>
                 </a>
 
             </div>
 
 
-
             {{-- TOTAL MEMBERS --}}
-            <div class="rounded-xl border border-[#cfe1d3] bg-[#f4faf4] p-5 shadow-sm">
+            <div class="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
 
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#dceede] text-[#26754f]">
-                    <span class="text-lg">👤</span>
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EEF3FF]">
+
+                    <svg
+                        class="h-5 w-5 text-[#102A72]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"
+                        />
+                    </svg>
+
                 </div>
 
-                <p class="mt-4 text-xs font-medium text-[#174638]">
+                <p class="mt-5 text-xs font-medium text-slate-500">
                     Total Members
                 </p>
 
-                <p class="mt-1 text-3xl font-semibold text-[#123e31]">
+                <p class="mt-1 text-3xl font-semibold text-[#102A72]">
                     {{ $totalMembers }}
                 </p>
 
-                {{-- Members page not created yet --}}
-                <span class="mt-4 inline-flex items-center gap-1 text-xs font-medium text-[#26754f]/50">
+                <a
+                    href="{{ route('admin.members.index') }}"
+                    class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-[#102A72] transition hover:text-[#B08A18]"
+                >
                     View members
                     <span>→</span>
-                </span>
+                </a>
 
             </div>
-
 
 
             {{-- VICARIATES --}}
-            <div class="rounded-xl border border-[#cfe1ed] bg-[#f3f9fc] p-5 shadow-sm">
+            <div class="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
 
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#dcecf8] text-[#2275ad]">
-                    <span class="text-lg">🏛</span>
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EEF3FF]">
+
+                    <svg
+                        class="h-5 w-5 text-[#102A72]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"
+                        />
+                    </svg>
+
                 </div>
 
-                <p class="mt-4 text-xs font-medium text-[#174638]">
+                <p class="mt-5 text-xs font-medium text-slate-500">
                     Vicariates
                 </p>
 
-                <p class="mt-1 text-3xl font-semibold text-[#123e31]">
+                <p class="mt-1 text-3xl font-semibold text-[#102A72]">
                     {{ $totalVicariates }}
                 </p>
 
-                {{-- Vicariates page not created yet --}}
-                <span class="mt-4 inline-flex items-center gap-1 text-xs font-medium text-[#2275ad]/50">
-                    View vicariates
-                    <span>→</span>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-slate-400">
+                    Organization structure
                 </span>
 
             </div>
 
 
-
             {{-- UNITS --}}
-            <div class="rounded-xl border border-[#ddd2ed] bg-[#f8f5fc] p-5 shadow-sm">
+            <div class="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
 
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#ebe1f7] text-[#7650a5]">
-                    <span class="text-lg">🏢</span>
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EEF3FF]">
+
+                    <svg
+                        class="h-5 w-5 text-[#102A72]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"
+                        />
+                    </svg>
+
                 </div>
 
-                <p class="mt-4 text-xs font-medium text-[#174638]">
+                <p class="mt-5 text-xs font-medium text-slate-500">
                     Units
                 </p>
 
-                <p class="mt-1 text-3xl font-semibold text-[#123e31]">
+                <p class="mt-1 text-3xl font-semibold text-[#102A72]">
                     {{ $totalUnits }}
                 </p>
 
-                {{-- Units page not created yet --}}
-                <span class="mt-4 inline-flex items-center gap-1 text-xs font-medium text-[#7650a5]/50">
-                    View units
-                    <span>→</span>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-slate-400">
+                    Organization units
                 </span>
 
             </div>
@@ -284,24 +311,36 @@
         </div>
 
 
-
         {{-- ===================================================== --}}
         {{-- RECENT ACCOUNT REQUESTS --}}
         {{-- ===================================================== --}}
 
-        <section class="mt-5 overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
-
+        <section class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
             {{-- Header --}}
-            <div class="flex items-center justify-between border-b border-stone-200 px-5 py-4">
+            <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
 
                 <div class="flex items-center gap-3">
 
-                    <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#edf1eb] text-[#174638]">
-                        <span>👤</span>
+                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-[#EEF3FF]">
+
+                        <svg
+                            class="h-4 w-4 text-[#102A72]"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.8"
+                                d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z"
+                            />
+                        </svg>
+
                     </div>
 
-                    <h3 class="text-sm font-semibold text-[#173e32]">
+                    <h3 class="text-sm font-semibold text-[#102A72]">
                         Recent Account Requests
                     </h3>
 
@@ -309,13 +348,12 @@
 
                 <a
                     href="{{ route('admin.account-requests.index') }}"
-                    class="text-xs font-medium text-[#174638] hover:underline"
+                    class="text-xs font-semibold text-[#102A72] hover:text-[#B08A18]"
                 >
                     View all →
                 </a>
 
             </div>
-
 
 
             @if($recentRequests->count() > 0)
@@ -324,27 +362,27 @@
 
                     <table class="w-full text-left text-sm">
 
-                        <thead class="bg-stone-50 text-xs text-stone-500">
+                        <thead class="bg-[#F8FAFF] text-xs text-slate-500">
 
                             <tr>
 
-                                <th class="px-5 py-3 font-medium">
+                                <th class="px-5 py-3 font-semibold">
                                     Name
                                 </th>
 
-                                <th class="px-5 py-3 font-medium">
+                                <th class="px-5 py-3 font-semibold">
                                     Position
                                 </th>
 
-                                <th class="px-5 py-3 font-medium">
+                                <th class="px-5 py-3 font-semibold">
                                     Unit
                                 </th>
 
-                                <th class="px-5 py-3 font-medium">
+                                <th class="px-5 py-3 font-semibold">
                                     Date Requested
                                 </th>
 
-                                <th class="px-5 py-3 font-medium">
+                                <th class="px-5 py-3 font-semibold">
                                     Status
                                 </th>
 
@@ -357,27 +395,27 @@
 
                             @foreach($recentRequests as $request)
 
-                                <tr class="border-t border-stone-100 transition hover:bg-stone-50">
+                                <tr class="border-t border-slate-100 transition hover:bg-[#F8FAFF]">
 
-                                    <td class="px-5 py-3 font-medium text-[#173e32]">
+                                    <td class="px-5 py-3 font-medium text-slate-800">
                                         {{ $request->name }}
                                     </td>
 
-                                    <td class="px-5 py-3 text-stone-600">
+                                    <td class="px-5 py-3 text-slate-600">
                                         {{ ucwords(str_replace('_', ' ', $request->position ?? '—')) }}
                                     </td>
 
-                                    <td class="px-5 py-3 text-stone-600">
+                                    <td class="px-5 py-3 text-slate-600">
                                         {{ $request->unit ?? '—' }}
                                     </td>
 
-                                    <td class="px-5 py-3 text-stone-600">
+                                    <td class="px-5 py-3 text-slate-600">
                                         {{ $request->created_at->format('M d, Y') }}
                                     </td>
 
                                     <td class="px-5 py-3">
 
-                                        <span class="rounded-full bg-yellow-100 px-2.5 py-1 text-xs font-medium text-yellow-700">
+                                        <span class="inline-flex rounded-full bg-[#FFF5D6] px-2.5 py-1 text-xs font-semibold text-[#9A7615]">
                                             Pending
                                         </span>
 
@@ -397,15 +435,29 @@
 
                 <div class="flex min-h-[180px] flex-col items-center justify-center px-6 py-10 text-center">
 
-                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#f0f2ed] text-[#829188]">
-                        📋
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#F1F5FF]">
+
+                        <svg
+                            class="h-6 w-6 text-[#102A72]"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.7"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a3 3 0 006 0M9 5h6"
+                            />
+                        </svg>
+
                     </div>
 
-                    <p class="mt-4 text-sm font-medium text-[#173e32]">
+                    <p class="mt-4 text-sm font-semibold text-slate-800">
                         No account requests at the moment.
                     </p>
 
-                    <p class="mt-1 text-xs text-stone-500">
+                    <p class="mt-1 text-xs text-slate-500">
                         New requests will appear here once submitted.
                     </p>
 
@@ -416,37 +468,44 @@
         </section>
 
 
-
         {{-- ===================================================== --}}
         {{-- BOTTOM LEFT --}}
         {{-- ===================================================== --}}
 
-        <div class="mt-5 grid gap-5 md:grid-cols-2">
+        <div class="mt-6 grid gap-6 md:grid-cols-2">
 
 
             {{-- ORGANIZATION OVERVIEW --}}
-            <section class="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
+            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
 
                 <div class="flex items-center justify-between">
 
-                    <h3 class="text-sm font-semibold text-[#173e32]">
-                        Organization Overview
-                    </h3>
+                    <div>
+
+                        <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#B08A18]">
+                            Organization
+                        </p>
+
+                        <h3 class="mt-1 text-sm font-semibold text-[#102A72]">
+                            Organization Overview
+                        </h3>
+
+                    </div>
 
                 </div>
 
 
-                <div class="mt-5 grid grid-cols-2 gap-2">
+                <div class="mt-5 grid grid-cols-2 gap-3">
 
 
                     {{-- Vicariates --}}
-                    <div class="rounded-lg border border-[#eadcae] bg-[#fffaf0] p-4">
+                    <div class="rounded-xl border border-blue-100 bg-[#F8FAFF] p-4">
 
-                        <p class="text-xs text-stone-600">
+                        <p class="text-xs text-slate-500">
                             Vicariates
                         </p>
 
-                        <p class="mt-2 text-2xl font-semibold text-[#173e32]">
+                        <p class="mt-2 text-2xl font-semibold text-[#102A72]">
                             {{ $totalVicariates }}
                         </p>
 
@@ -454,13 +513,13 @@
 
 
                     {{-- Units --}}
-                    <div class="rounded-lg border border-[#cfe1d3] bg-[#f5faf5] p-4">
+                    <div class="rounded-xl border border-blue-100 bg-[#F8FAFF] p-4">
 
-                        <p class="text-xs text-stone-600">
+                        <p class="text-xs text-slate-500">
                             Units
                         </p>
 
-                        <p class="mt-2 text-2xl font-semibold text-[#173e32]">
+                        <p class="mt-2 text-2xl font-semibold text-[#102A72]">
                             {{ $totalUnits }}
                         </p>
 
@@ -468,13 +527,13 @@
 
 
                     {{-- Members --}}
-                    <div class="rounded-lg border border-[#cfe1ed] bg-[#f4f9fc] p-4">
+                    <div class="rounded-xl border border-blue-100 bg-[#F8FAFF] p-4">
 
-                        <p class="text-xs text-stone-600">
+                        <p class="text-xs text-slate-500">
                             Members
                         </p>
 
-                        <p class="mt-2 text-2xl font-semibold text-[#173e32]">
+                        <p class="mt-2 text-2xl font-semibold text-[#102A72]">
                             {{ $totalMembers }}
                         </p>
 
@@ -482,13 +541,13 @@
 
 
                     {{-- Meetings --}}
-                    <div class="rounded-lg border border-[#ddd2ed] bg-[#f9f6fc] p-4">
+                    <div class="rounded-xl border border-[#D4AF37]/30 bg-[#FFFDF5] p-4">
 
-                        <p class="text-xs text-stone-600">
+                        <p class="text-xs text-slate-500">
                             Meetings
                         </p>
 
-                        <p class="mt-2 text-2xl font-semibold text-[#173e32]">
+                        <p class="mt-2 text-2xl font-semibold text-[#102A72]">
                             {{ $totalMeetings }}
                         </p>
 
@@ -499,15 +558,20 @@
             </section>
 
 
-
             {{-- RECENT MEETINGS --}}
-            <section class="rounded-xl border border-stone-200 bg-white shadow-sm">
+            <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
 
-                <div class="border-b border-stone-200 px-5 py-4">
+                <div class="border-b border-slate-200 px-5 py-4">
 
-                    <h3 class="text-sm font-semibold text-[#173e32]">
-                        Recent Meetings
-                    </h3>
+                    <div class="flex items-center gap-2">
+
+                        <span class="h-2 w-2 rounded-full bg-[#D4AF37]"></span>
+
+                        <h3 class="text-sm font-semibold text-[#102A72]">
+                            Recent Meetings
+                        </h3>
+
+                    </div>
 
                 </div>
 
@@ -516,7 +580,7 @@
 
                     <div class="p-5">
 
-                        <p class="text-sm text-stone-500">
+                        <p class="text-sm text-slate-500">
                             Meeting records are available.
                         </p>
 
@@ -526,15 +590,29 @@
 
                     <div class="flex min-h-[190px] flex-col items-center justify-center px-5 text-center">
 
-                        <div class="text-3xl">
-                            📅
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#F1F5FF]">
+
+                            <svg
+                                class="h-6 w-6 text-[#102A72]"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.7"
+                                    d="M8 7V3m8 4V3M4 11h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z"
+                                />
+                            </svg>
+
                         </div>
 
-                        <p class="mt-4 text-sm font-medium text-[#173e32]">
+                        <p class="mt-4 text-sm font-semibold text-slate-800">
                             No recent meetings
                         </p>
 
-                        <p class="mt-1 text-xs text-stone-500">
+                        <p class="mt-1 text-xs text-slate-500">
                             Meeting records will appear here once available.
                         </p>
 
@@ -549,40 +627,59 @@
     </div>
 
 
-
     {{-- ========================================================= --}}
     {{-- RIGHT COLUMN --}}
     {{-- ========================================================= --}}
 
-    <div class="space-y-5">
+    <div class="space-y-6">
 
 
         {{-- ===================================================== --}}
         {{-- NOTIFICATIONS --}}
         {{-- ===================================================== --}}
 
-        <section class="rounded-xl border border-stone-200 bg-white shadow-sm">
+        <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
 
-            <div class="border-b border-stone-200 px-5 py-4">
+            <div class="border-b border-slate-200 px-5 py-4">
 
-                <h3 class="text-sm font-semibold text-[#173e32]">
-                    Notifications
-                </h3>
+                <div class="flex items-center gap-2">
+
+                    <span class="h-2 w-2 rounded-full bg-[#D4AF37]"></span>
+
+                    <h3 class="text-sm font-semibold text-[#102A72]">
+                        Notifications
+                    </h3>
+
+                </div>
 
             </div>
 
 
             <div class="flex min-h-[175px] flex-col items-center justify-center px-5 text-center">
 
-                <div class="text-3xl">
-                    🔔
+                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#F1F5FF]">
+
+                    <svg
+                        class="h-6 w-6 text-[#102A72]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.7"
+                            d="M15 17h5l-1.5-2.5V10a6.5 6.5 0 00-13 0v4.5L4 17h5m6 0a3 3 0 01-6 0"
+                        />
+                    </svg>
+
                 </div>
 
-                <p class="mt-4 text-sm font-semibold text-[#173e32]">
+                <p class="mt-4 text-sm font-semibold text-slate-800">
                     No new notifications
                 </p>
 
-                <p class="mt-1 text-xs text-stone-500">
+                <p class="mt-1 text-xs text-slate-500">
                     You're all caught up!
                 </p>
 
@@ -591,16 +688,15 @@
         </section>
 
 
-
         {{-- ===================================================== --}}
         {{-- QUICK ACTIONS --}}
         {{-- ===================================================== --}}
 
-        <section class="rounded-xl border border-stone-200 bg-white shadow-sm">
+        <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
 
-            <div class="border-b border-stone-200 px-5 py-4">
+            <div class="border-b border-slate-200 px-5 py-4">
 
-                <h3 class="text-sm font-semibold text-[#173e32]">
+                <h3 class="text-sm font-semibold text-[#102A72]">
                     Quick Actions
                 </h3>
 
@@ -613,72 +709,112 @@
                 {{-- Review Account Requests --}}
                 <a
                     href="{{ route('admin.account-requests.index') }}"
-                    class="flex items-center justify-between rounded-lg border border-stone-200 px-4 py-3 transition hover:bg-stone-50"
+                    class="group flex items-center justify-between rounded-xl border border-slate-200 px-4 py-3 transition hover:border-[#D4AF37]/50 hover:bg-[#F8FAFF]"
                 >
 
                     <span class="flex items-center gap-3">
 
-                        <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[#fff5d8] text-[#9a741b]">
-                            👥
+                        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#FFF7DD]">
+
+                            <svg
+                                class="h-4 w-4 text-[#B08A18]"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z"
+                                />
+                            </svg>
+
                         </span>
 
-                        <span class="text-sm text-[#173e32]">
+                        <span class="text-sm font-medium text-slate-700">
                             Review Account Requests
                         </span>
 
                     </span>
 
-                    <span class="text-lg text-[#507565]">
+                    <span class="text-lg text-[#102A72] transition group-hover:text-[#B08A18]">
                         ›
                     </span>
 
                 </a>
 
 
-
                 {{-- Add Member --}}
                 <span
-                    class="flex cursor-not-allowed items-center justify-between rounded-lg border border-stone-200 px-4 py-3 opacity-50"
+                    class="flex cursor-not-allowed items-center justify-between rounded-xl border border-slate-200 px-4 py-3 opacity-50"
                 >
 
                     <span class="flex items-center gap-3">
 
-                        <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[#f0f2ed] text-[#31584a]">
-                            👤
+                        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#F1F5FF]">
+
+                            <svg
+                                class="h-4 w-4 text-[#102A72]"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M12 5v14M5 12h14"
+                                />
+                            </svg>
+
                         </span>
 
-                        <span class="text-sm text-[#173e32]">
+                        <span class="text-sm font-medium text-slate-700">
                             Add Member
                         </span>
 
                     </span>
 
-                    <span class="text-lg text-[#507565]">
+                    <span class="text-lg text-[#102A72]">
                         ›
                     </span>
 
                 </span>
 
 
-
                 {{-- Generate Report --}}
                 <span
-                    class="flex cursor-not-allowed items-center justify-between rounded-lg border border-stone-200 px-4 py-3 opacity-50"
+                    class="flex cursor-not-allowed items-center justify-between rounded-xl border border-slate-200 px-4 py-3 opacity-50"
                 >
 
                     <span class="flex items-center gap-3">
 
-                        <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[#f0f2ed] text-[#31584a]">
-                            📄
+                        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#F1F5FF]">
+
+                            <svg
+                                class="h-4 w-4 text-[#102A72]"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M7 3h8l4 4v14H7a2 2 0 01-2-2V5a2 2 0 012-2zM15 3v5h5M9 13h6M9 17h6"
+                                />
+                            </svg>
+
                         </span>
 
-                        <span class="text-sm text-[#173e32]">
+                        <span class="text-sm font-medium text-slate-700">
                             Generate Report
                         </span>
 
                     </span>
 
-                    <span class="text-lg text-[#507565]">
+                    <span class="text-lg text-[#102A72]">
                         ›
                     </span>
 
@@ -689,33 +825,38 @@
         </section>
 
 
-
         {{-- ===================================================== --}}
         {{-- SYSTEM INFORMATION --}}
         {{-- ===================================================== --}}
 
-        <section class="rounded-xl border border-stone-200 bg-white shadow-sm">
+        <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
 
-            <div class="border-b border-stone-200 px-5 py-4">
+            <div class="border-b border-slate-200 px-5 py-4">
 
-                <h3 class="text-sm font-semibold text-[#173e32]">
-                    System Information
-                </h3>
+                <div class="flex items-center gap-2">
+
+                    <span class="h-2 w-2 rounded-full bg-[#D4AF37]"></span>
+
+                    <h3 class="text-sm font-semibold text-[#102A72]">
+                        System Information
+                    </h3>
+
+                </div>
 
             </div>
 
 
-            <div class="divide-y divide-stone-100">
+            <div class="divide-y divide-slate-100">
 
 
                 {{-- Diocese --}}
                 <div class="flex items-center justify-between px-5 py-4">
 
-                    <span class="text-xs text-stone-500">
+                    <span class="text-xs text-slate-500">
                         Diocese
                     </span>
 
-                    <span class="text-right text-xs font-medium text-[#173e32]">
+                    <span class="max-w-[190px] text-right text-xs font-semibold text-[#102A72]">
                         CWL Diocese of Imus
                     </span>
 
@@ -725,11 +866,11 @@
                 {{-- Current User --}}
                 <div class="flex items-center justify-between px-5 py-4">
 
-                    <span class="text-xs text-stone-500">
+                    <span class="text-xs text-slate-500">
                         Current User
                     </span>
 
-                    <span class="text-right text-xs font-medium text-[#173e32]">
+                    <span class="max-w-[190px] truncate text-right text-xs font-semibold text-[#102A72]">
                         {{ Auth::user()->name }}
                     </span>
 
@@ -739,11 +880,11 @@
                 {{-- Role --}}
                 <div class="flex items-center justify-between px-5 py-4">
 
-                    <span class="text-xs text-stone-500">
+                    <span class="text-xs text-slate-500">
                         Role
                     </span>
 
-                    <span class="text-right text-xs font-medium capitalize text-[#173e32]">
+                    <span class="text-right text-xs font-semibold capitalize text-[#102A72]">
                         {{ Auth::user()->role }}
                     </span>
 
@@ -753,11 +894,11 @@
                 {{-- Last Login --}}
                 <div class="flex items-center justify-between px-5 py-4">
 
-                    <span class="text-xs text-stone-500">
+                    <span class="text-xs text-slate-500">
                         Last Login
                     </span>
 
-                    <span class="text-right text-xs font-medium text-[#173e32]">
+                    <span class="text-right text-xs font-semibold text-[#102A72]">
 
                         {{ Auth::user()->last_login_at
                             ? \Carbon\Carbon::parse(Auth::user()->last_login_at)->format('M d, Y h:i A')

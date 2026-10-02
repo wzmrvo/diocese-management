@@ -22,101 +22,222 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-   public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request): RedirectResponse
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Authenticate User
+        |--------------------------------------------------------------------------
+        */
+
         $request->authenticate();
 
         $request->session()->regenerate();
 
         $user = $request->user();
 
-        // Admin
+
+        /*
+        |--------------------------------------------------------------------------
+        | ADMIN
+        |--------------------------------------------------------------------------
+        */
+
         if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
 
-        // User must be approved before accessing the system
+
+        /*
+        |--------------------------------------------------------------------------
+        | ACCOUNT APPROVAL
+        |--------------------------------------------------------------------------
+        |
+        | Only approved users may enter the system.
+        |
+        */
+
         if ($user->status !== 'approved') {
+
             Auth::guard('web')->logout();
 
             return redirect()
                 ->route('login')
                 ->withErrors([
-                    'email' => 'Your account is still waiting for administrator approval.',
+                    'email' =>
+                        'Your account is still waiting for administrator approval.',
                 ]);
         }
 
-        // Diocesan positions
+
+        /*
+        |--------------------------------------------------------------------------
+        | DIOCESAN USERS
+        |--------------------------------------------------------------------------
+        */
+
         if ($user->organization_level === 'diocesan') {
 
             return match ($user->position) {
 
                 'president' =>
-                    redirect()->route('diocesan.president.dashboard'),
+                    redirect()->route(
+                        'diocesan.president.dashboard'
+                    ),
 
-                'vice_president_1' =>
-                    redirect()->route('diocesan.vice-president-1.dashboard'),
+                'first_vice_president' =>
+                    redirect()->route(
+                        'diocesan.vice-president-1.dashboard'
+                    ),
 
-                'vice_president_2' =>
-                    redirect()->route('diocesan.vice-president-2.dashboard'),
+                'second_vice_president' =>
+                    redirect()->route(
+                        'diocesan.vice-president-2.dashboard'
+                    ),
 
                 'secretary' =>
-                    redirect()->route('diocesan.secretary.dashboard'),
+                    redirect()->route(
+                        'diocesan.secretary.dashboard'
+                    ),
 
                 'assistant_secretary' =>
-                    redirect()->route('diocesan.assistant-secretary.dashboard'),
+                    redirect()->route(
+                        'diocesan.assistant-secretary.dashboard'
+                    ),
 
                 'treasurer' =>
-                    redirect()->route('diocesan.treasurer.dashboard'),
+                    redirect()->route(
+                        'diocesan.treasurer.dashboard'
+                    ),
+
+                'assistant_treasurer' =>
+                    redirect()->route(
+                        'diocesan.assistant-treasurer.dashboard'
+                    ),
 
                 'auditor' =>
-                    redirect()->route('diocesan.auditor.dashboard'),
+                    redirect()->route(
+                        'diocesan.auditor.dashboard'
+                    ),
 
-                'board_member' =>
-                    redirect()->route('diocesan.board-member.dashboard'),
+                'dbm' =>
+                    redirect()->route(
+                        'diocesan.board-member.dashboard'
+                    ),
 
                 default =>
-                    redirect()->route('dashboard'),
+                    $this->invalidOrganizationPosition(),
             };
         }
 
-        // Vicariate positions
+
+        /*
+        |--------------------------------------------------------------------------
+        | VICARIATE USERS
+        |--------------------------------------------------------------------------
+        */
+
         if ($user->organization_level === 'vicariate') {
 
             return match ($user->position) {
 
                 'president' =>
-                    redirect()->route('vicariate.president.dashboard'),
+                    redirect()->route(
+                        'vicariate.president.dashboard'
+                    ),
 
-                'board_member' =>
-                    redirect()->route('vicariate.board-member.dashboard'),
+                'supervisor' =>
+                    redirect()->route(
+                        'vicariate.supervisor.dashboard'
+                    ),
 
                 default =>
-                    redirect()->route('dashboard'),
+                    $this->invalidOrganizationPosition(),
             };
         }
 
-        // Unit positions
+
+        /*
+        |--------------------------------------------------------------------------
+        | UNIT USERS
+        |--------------------------------------------------------------------------
+        */
+
         if ($user->organization_level === 'unit') {
 
             return match ($user->position) {
 
                 'president' =>
-                    redirect()->route('unit.president.dashboard'),
+                    redirect()->route(
+                        'unit.president.dashboard'
+                    ),
+
+                'vice_president' =>
+                    redirect()->route(
+                        'unit.vice-president.dashboard'
+                    ),
+
+                'secretary' =>
+                    redirect()->route(
+                        'unit.secretary.dashboard'
+                    ),
+
+                'assistant_secretary' =>
+                    redirect()->route(
+                        'unit.assistant-secretary.dashboard'
+                    ),
+
+                'treasurer' =>
+                    redirect()->route(
+                        'unit.treasurer.dashboard'
+                    ),
+
+                'auditor' =>
+                    redirect()->route(
+                        'unit.auditor.dashboard'
+                    ),
 
                 'board_member' =>
-                    redirect()->route('unit.board-member.dashboard'),
+                    redirect()->route(
+                        'unit.board-member.dashboard'
+                    ),
 
                 'member' =>
-                    redirect()->route('member.dashboard'),
+                    redirect()->route(
+                        'member.dashboard'
+                    ),
 
                 default =>
-                    redirect()->route('dashboard'),
+                    $this->invalidOrganizationPosition(),
             };
         }
 
-        return redirect()->route('dashboard');
+
+        /*
+        |--------------------------------------------------------------------------
+        | INVALID ORGANIZATION
+        |--------------------------------------------------------------------------
+        */
+
+        return $this->invalidOrganizationPosition();
     }
+
+
+    /**
+     * Handle invalid organizational information.
+     */
+    private function invalidOrganizationPosition(): RedirectResponse
+    {
+        Auth::guard('web')->logout();
+
+        return redirect()
+            ->route('login')
+            ->withErrors([
+                'email' =>
+                    'Your account has an invalid organizational position. Please contact the administrator.',
+            ]);
+    }
+
 
     /**
      * Destroy an authenticated session.

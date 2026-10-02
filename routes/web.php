@@ -1,15 +1,16 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\AccountRequestController;
+use App\Http\Controllers\SettingsController;
+use Illuminate\Support\Facades\Route;
 use App\Models\User;
 
 
 /*
 |--------------------------------------------------------------------------
-| Public Routes
+| Public
 |--------------------------------------------------------------------------
 */
 
@@ -20,11 +21,11 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Authentication Routes
+| Authentication
 |--------------------------------------------------------------------------
 */
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
 /*
@@ -36,16 +37,23 @@ require __DIR__.'/auth.php';
 Route::get('/register', [RegisterController::class, 'create'])
     ->name('register');
 
-Route::post('/register', [RegisterController::class, 'store']);
+Route::post('/register', [RegisterController::class, 'store'])
+    ->name('register.store');
 
 
 /*
 |--------------------------------------------------------------------------
-| User Profile
+| Authenticated Routes
 |--------------------------------------------------------------------------
 */
 
 Route::middleware('auth')->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Profile
+    |--------------------------------------------------------------------------
+    */
 
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
@@ -56,29 +64,70 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 
-});
+
+    /*
+    |--------------------------------------------------------------------------
+    | SETTINGS DASHBOARD
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/settings', [SettingsController::class, 'index'])
+        ->name('settings');
 
 
-/*
-|--------------------------------------------------------------------------
-| Normal Dashboard
-|--------------------------------------------------------------------------
-*/
+    /*
+    |--------------------------------------------------------------------------
+    | SETTINGS - PROFILE
+    |--------------------------------------------------------------------------
+    */
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})
-->middleware(['auth', 'verified'])
-->name('dashboard');
+    Route::get('/settings/profile', [SettingsController::class, 'profile'])
+        ->name('settings.profile');
 
 
-/*
-|--------------------------------------------------------------------------
-| MEMBER ROUTES
-|--------------------------------------------------------------------------
-*/
+    Route::patch('/settings/profile', [SettingsController::class, 'updateProfile'])
+        ->name('settings.profile.update');
 
-Route::middleware('auth')->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | SETTINGS - SECURITY
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/settings/security', [SettingsController::class, 'security'])
+        ->name('settings.security');
+
+
+    Route::patch('/settings/security', [SettingsController::class, 'updatePassword'])
+        ->name('settings.password.update');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SETTINGS - ORGANIZATION
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/settings/organization', [SettingsController::class, 'organization'])
+        ->name('settings.organization');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SETTINGS - ACCOUNT
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/settings/account', [SettingsController::class, 'account'])
+        ->name('settings.account');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | MEMBER DASHBOARD
+    |--------------------------------------------------------------------------
+    */
 
     Route::get('/member', function () {
         return view('member.dashboard');
@@ -89,7 +138,7 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN ROUTES
+| ADMIN
 |--------------------------------------------------------------------------
 */
 
@@ -111,10 +160,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
             ->where('status', 'pending')
             ->count();
 
-        return view('admin.dashboard', compact(
-            'memberCount',
-            'pendingCount'
-        ));
+        return view(
+            'admin.dashboard',
+            compact(
+                'memberCount',
+                'pendingCount'
+            )
+        );
 
     })->name('admin.dashboard');
 
@@ -130,10 +182,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
         'index'
     ])->name('admin.account-requests.index');
 
+
     Route::patch('/admin/account-requests/{user}/approve', [
         AccountRequestController::class,
         'approve'
     ])->name('admin.account-requests.approve');
+
 
     Route::delete('/admin/account-requests/{user}/reject', [
         AccountRequestController::class,
@@ -154,8 +208,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
             ->latest()
             ->get();
 
-        return view('admin.members', compact('members'));
+        return view(
+            'admin.members',
+            compact('members')
+        );
 
     })->name('admin.members.index');
+
+     Route::get('/member/profile', function () {
+     return view('member.profile');
+    })->middleware(['auth'])->name('member.profile');
 
 });
