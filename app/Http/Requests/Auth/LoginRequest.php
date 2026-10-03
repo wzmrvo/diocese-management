@@ -42,13 +42,29 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $credentials = $this->only('email', 'password');
+
+        if (! Auth::validate($credentials)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
         }
+
+        $user = \App\Models\User::where('email', $this->string('email'))->first();
+
+        if ($user && $user->status !== 'approved') {
+            throw ValidationException::withMessages([
+                'email' => match ($user->status) {
+                    'pending' => 'Your account is still waiting for administrator approval.',
+                    'inactive' => 'Your account has been deactivated. Please contact the administrator.',
+                    default => 'Your account is not currently allowed to log in.',
+                },
+            ]);
+        }
+
+        Auth::login($user, $this->boolean('remember'));
 
         RateLimiter::clear($this->throttleKey());
     }

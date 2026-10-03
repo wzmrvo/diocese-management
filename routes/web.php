@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\AccountRequestController;
 use App\Http\Controllers\Admin\OrganizationController;
+use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -48,6 +49,7 @@ Route::post('/register', [RegisterController::class, 'store'])
 |--------------------------------------------------------------------------
 |
 | These routes are available to authenticated users.
+| Both Admin and Member accounts can access the settings pages.
 |
 */
 
@@ -55,8 +57,12 @@ Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | PROFILE
+    | OLD /PROFILE ROUTES
     |--------------------------------------------------------------------------
+    |
+    | These are kept so existing Breeze links do not break.
+    | The new settings system is separate.
+    |
     */
 
     Route::get('/profile', [ProfileController::class, 'edit'])
@@ -71,30 +77,86 @@ Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | MEMBER SETTINGS
+    | SETTINGS
+    |--------------------------------------------------------------------------
+    |
+    | IMPORTANT:
+    | These are the ONLY settings route names used by the settings UI.
+    |
+    | settings
+    | settings.profile
+    | settings.profile.update
+    | settings.security
+    | settings.password.update
+    | settings.organization
+    | settings.account
+    |
+    | They work for BOTH Admin and Member users.
+    |
+    */
+
+    Route::get('/settings', [
+        SettingsController::class,
+        'index'
+    ])->name('settings');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SETTINGS - PROFILE
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/settings', [SettingsController::class, 'index'])
-        ->name('settings');
+    Route::get('/settings/profile', [
+        SettingsController::class,
+        'profile'
+    ])->name('settings.profile');
 
-    Route::get('/settings/profile', [SettingsController::class, 'profile'])
-        ->name('settings.profile');
+    Route::patch('/settings/profile', [
+        SettingsController::class,
+        'updateProfile'
+    ])->name('settings.profile.update');
 
-    Route::patch('/settings/profile', [SettingsController::class, 'updateProfile'])
-        ->name('settings.profile.update');
 
-    Route::get('/settings/security', [SettingsController::class, 'security'])
-        ->name('settings.security');
+    /*
+    |--------------------------------------------------------------------------
+    | SETTINGS - SECURITY
+    |--------------------------------------------------------------------------
+    */
 
-    Route::patch('/settings/security', [SettingsController::class, 'updatePassword'])
-        ->name('settings.password.update');
+    Route::get('/settings/security', [
+        SettingsController::class,
+        'security'
+    ])->name('settings.security');
 
-    Route::get('/settings/organization', [SettingsController::class, 'organization'])
-        ->name('settings.organization');
+    Route::patch('/settings/security', [
+        SettingsController::class,
+        'updatePassword'
+    ])->name('settings.password.update');
 
-    Route::get('/settings/account', [SettingsController::class, 'account'])
-        ->name('settings.account');
+
+    /*
+    |--------------------------------------------------------------------------
+    | SETTINGS - ORGANIZATION
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/settings/organization', [
+        SettingsController::class,
+        'organization'
+    ])->name('settings.organization');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SETTINGS - ACCOUNT
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/settings/account', [
+        SettingsController::class,
+        'account'
+    ])->name('settings.account');
 
 
     /*
@@ -192,19 +254,30 @@ Route::middleware(['auth', 'admin'])
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/members', function () {
+        Route::get('/members', [
+            MemberController::class,
+            'index'
+        ])->name('admin.members.index');
 
-            $members = User::where('role', 'member')
-                ->where('status', 'approved')
-                ->latest()
-                ->get();
+        Route::get('/members/inactive', [
+            MemberController::class,
+            'inactive'
+        ])->name('admin.members.inactive');
 
-            return view(
-                'admin.members',
-                compact('members')
-            );
+        Route::patch('/members/{user}/deactivate', [
+            MemberController::class,
+            'deactivate'
+        ])->name('admin.members.deactivate');
 
-        })->name('admin.members.index');
+        Route::patch('/members/{user}/reactivate', [
+            MemberController::class,
+            'reactivate'
+        ])->name('admin.members.reactivate');
+
+        Route::delete('/members/{user}', [
+            MemberController::class,
+            'destroy'
+        ])->name('admin.members.destroy');
 
 
         /*
@@ -267,9 +340,6 @@ Route::middleware(['auth', 'admin'])
         |--------------------------------------------------------------------------
         | VICARIATE DELETE CONFIRMATION
         |--------------------------------------------------------------------------
-        |
-        | This page is reached ONLY from the Edit Vicariate page.
-        |
         */
 
         Route::get('/organization/vicariates/{vicariate}/delete', [
@@ -319,9 +389,6 @@ Route::middleware(['auth', 'admin'])
         |--------------------------------------------------------------------------
         | UNIT DELETE CONFIRMATION
         |--------------------------------------------------------------------------
-        |
-        | This page is reached ONLY from the Edit Unit page.
-        |
         */
 
         Route::get('/organization/units/{unit}/delete', [
@@ -333,53 +400,5 @@ Route::middleware(['auth', 'admin'])
             OrganizationController::class,
             'destroyUnit'
         ])->name('admin.organization.units.destroy');
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | ADMIN SETTINGS
-        |--------------------------------------------------------------------------
-        |
-        | These routes are protected by both:
-        |
-        | auth
-        | admin
-        |
-        */
-
-        Route::get('/settings', [
-            SettingsController::class,
-            'index'
-        ])->name('admin.settings');
-
-        Route::get('/settings/profile', [
-            SettingsController::class,
-            'profile'
-        ])->name('admin.settings.profile');
-
-        Route::patch('/settings/profile', [
-            SettingsController::class,
-            'updateProfile'
-        ])->name('admin.settings.profile.update');
-
-        Route::get('/settings/security', [
-            SettingsController::class,
-            'security'
-        ])->name('admin.settings.security');
-
-        Route::patch('/settings/security', [
-            SettingsController::class,
-            'updatePassword'
-        ])->name('admin.settings.password.update');
-
-        Route::get('/settings/organization', [
-            SettingsController::class,
-            'organization'
-        ])->name('admin.settings.organization');
-
-        Route::get('/settings/account', [
-            SettingsController::class,
-            'account'
-        ])->name('admin.settings.account');
 
     });

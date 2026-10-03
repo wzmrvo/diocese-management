@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -33,8 +35,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden
-     * for serialization.
+     * The attributes that should be hidden.
      */
     protected $hidden = [
         'password',
@@ -52,27 +53,48 @@ class User extends Authenticatable
         ];
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
+
     /**
      * Vicariate relationship.
      */
-    public function vicariate()
+    public function vicariate(): BelongsTo
     {
-        return $this->belongsTo(Vicariate::class);
+        return $this->belongsTo(
+            Vicariate::class,
+            'vicariate_id',
+            'id'
+        );
     }
 
     /**
-     * Unit / Parish relationship.
+     * CWL Unit / Parish relationship.
+     *
+     * IMPORTANT:
+     * The relationship is called cwlUnit()
+     * because the users table already has a
+     * column named "unit".
      */
-    public function unit()
+    public function cwlUnit(): BelongsTo
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(
+            Unit::class,
+            'unit_id',
+            'id'
+        );
     }
 
     /**
      * Officer assignments.
      */
-    public function officerAssignments()
+    public function officerAssignments(): HasMany
     {
-        return $this->hasMany(OfficerAssignment::class);
+        return $this->hasMany(
+            OfficerAssignment::class
+        );
     }
 }

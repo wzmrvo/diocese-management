@@ -4,222 +4,715 @@
 
 @section('content')
 
-<!DOCTYPE html>
-<html lang="en">
+<div class="space-y-6">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{{-- ================================================================
+    FLASH MESSAGES
+================================================================= --}}
 
-    <title>Account Requests | CWL Diocese of Imus</title>
+@if (session('success'))
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
+    <div
+        class="flex items-start gap-3 rounded-xl
+               border border-[#d6e6d9]
+               bg-[#f4faf4]
+               px-5 py-4"
+    >
 
-<body class="min-h-screen bg-stone-50 text-stone-800">
+        <div
+            class="flex h-8 w-8 shrink-0 items-center
+                   justify-center rounded-full
+                   bg-[#e4f1e6] text-sm
+                   font-semibold text-[#173e32]"
+        >
+            ✓
+        </div>
 
-    <nav class="border-b border-stone-200 bg-white">
-        <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div>
 
-            <div>
-                <p class="text-sm font-medium text-emerald-700">
-                    CWL Diocese of Imus
-                </p>
+            <p class="text-sm font-semibold text-[#173e32]">
+                Request updated
+            </p>
 
-                <h1 class="text-xl font-semibold text-emerald-950">
-                    Account Requests
-                </h1>
-            </div>
-
-            <a
-                href="{{ route('admin.dashboard') }}"
-                class="rounded-lg px-4 py-2 text-sm font-medium
-                       text-stone-600 hover:bg-stone-100"
-            >
-                Back to Dashboard
-            </a>
+            <p class="mt-0.5 text-sm text-stone-600">
+                {{ session('success') }}
+            </p>
 
         </div>
-    </nav>
 
-    <main class="mx-auto max-w-7xl px-6 py-10">
+    </div>
 
-        {{-- Success message --}}
-        @if (session('success'))
-            <div class="mb-6 rounded-xl border border-emerald-200
-                        bg-emerald-50 px-5 py-4 text-sm text-emerald-800">
-                {{ session('success') }}
-            </div>
-        @endif
+@endif
 
-        {{-- Error message --}}
-        @if (session('error'))
-            <div class="mb-6 rounded-xl border border-red-200
-                        bg-red-50 px-5 py-4 text-sm text-red-800">
+
+@if (session('error'))
+
+    <div
+        class="flex items-start gap-3 rounded-xl
+               border border-red-200
+               bg-red-50
+               px-5 py-4"
+    >
+
+        <div
+            class="flex h-8 w-8 shrink-0 items-center
+                   justify-center rounded-full
+                   bg-red-100 text-sm
+                   font-semibold text-red-700"
+        >
+            !
+        </div>
+
+        <div>
+
+            <p class="text-sm font-semibold text-red-800">
+                Something went wrong
+            </p>
+
+            <p class="mt-0.5 text-sm text-red-700">
                 {{ session('error') }}
-            </div>
-        @endif
+            </p>
 
-        <div class="mb-8">
-            <p class="text-sm font-medium text-emerald-700">
+        </div>
+
+    </div>
+
+@endif
+
+
+{{-- ================================================================
+    PAGE HEADER
+================================================================= --}}
+
+<div
+    class="flex flex-col gap-4
+           sm:flex-row sm:items-end
+           sm:justify-between"
+>
+
+    <div>
+
+        <div class="flex items-center gap-2">
+
+            <span
+                class="h-1.5 w-1.5 rounded-full
+                       bg-[#8d7130]"
+            ></span>
+
+            <p
+                class="text-xs font-medium uppercase
+                       tracking-[0.15em]
+                       text-[#8d7130]"
+            >
                 Verification
             </p>
 
-            <h2 class="mt-1 text-3xl font-semibold text-emerald-950">
-                Pending Account Requests
-            </h2>
-
-            <p class="mt-2 text-stone-500">
-                Review membership requests before allowing users to access
-                the CWL organizational system.
-            </p>
         </div>
 
-        {{-- Pending count --}}
-        <div class="mb-6 rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
-            <p class="text-sm text-stone-500">
-                Pending Requests
-            </p>
+        <h1
+            class="mt-2 font-serif text-3xl
+                   font-semibold tracking-tight
+                   text-[#173e32]"
+        >
+            Account Requests
+        </h1>
 
-            <p class="mt-1 text-3xl font-semibold text-emerald-950">
-                {{ $requests->count() }}
-            </p>
-        </div>
+        <p
+            class="mt-1 max-w-2xl text-sm
+                   leading-6 text-stone-500"
+        >
+            Review membership requests and verify account information
+            before granting access to the CWL organizational system.
+        </p>
 
-        @if ($requests->isEmpty())
+    </div>
 
-            <div class="rounded-2xl border border-stone-200 bg-white p-10 text-center shadow-sm">
 
-                <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center
-                            rounded-full bg-emerald-50 text-emerald-700">
-                    ✓
-                </div>
+    {{-- BACK BUTTON --}}
 
-                <h3 class="text-lg font-semibold text-emerald-950">
-                    No pending requests
-                </h3>
+    <a
+        href="{{ route('admin.dashboard') }}"
+        class="inline-flex items-center justify-center
+               gap-2 rounded-lg
+               border border-stone-200
+               bg-white px-4 py-2.5
+               text-sm font-medium
+               text-stone-600
+               transition
+               hover:border-[#cfd8d1]
+               hover:bg-[#fafbf9]
+               hover:text-[#173e32]"
+    >
+        <svg
+            class="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.8"
+                d="M15 19l-7-7 7-7"
+            />
+        </svg>
 
-                <p class="mt-2 text-sm text-stone-500">
-                    All account requests have been reviewed.
+        Dashboard
+    </a>
+
+</div>
+
+
+{{-- ================================================================
+    SUMMARY CARD
+================================================================= --}}
+
+<div
+    class="rounded-xl border
+           border-[#dbe5dc]
+           bg-white shadow-sm"
+>
+
+    <div
+        class="flex items-center
+               justify-between gap-4
+               px-5 py-4"
+    >
+
+        <div class="flex items-center gap-3">
+
+            <div
+                class="flex h-10 w-10 items-center
+                       justify-center rounded-lg
+                       bg-[#f5f1e7]"
+            >
+
+                <svg
+                    class="h-5 w-5 text-[#8d7130]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.7"
+                        d="M18 8a6 6 0 01-12 0"
+                    />
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.7"
+                        d="M12 14v6"
+                    />
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.7"
+                        d="M8 20h8"
+                    />
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.7"
+                        d="M9 3h6"
+                    />
+                </svg>
+
+            </div>
+
+            <div>
+
+                <p class="text-xs text-stone-500">
+                    Pending Requests
+                </p>
+
+                <p
+                    class="mt-0.5 text-2xl
+                           font-semibold
+                           text-[#173e32]"
+                >
+                    {{ $requests->count() }}
                 </p>
 
             </div>
 
+        </div>
+
+
+        @if ($requests->count() > 0)
+
+            <span
+                class="rounded-full
+                       bg-[#f5f1e7]
+                       px-3 py-1
+                       text-xs font-medium
+                       text-[#8d7130]"
+            >
+                Needs review
+            </span>
+
         @else
 
-            <div class="space-y-4">
+            <span
+                class="rounded-full
+                       bg-[#edf6ef]
+                       px-3 py-1
+                       text-xs font-medium
+                       text-[#3f7650]"
+            >
+                All clear
+            </span>
 
-                @foreach ($requests as $request)
+        @endif
 
-                    <div class="rounded-2xl border border-stone-200
-                                bg-white p-6 shadow-sm">
+    </div>
 
-                        <div class="flex flex-col gap-6 lg:flex-row
-                                    lg:items-center lg:justify-between">
+</div>
 
-                            <div>
 
-                                <h3 class="text-lg font-semibold text-emerald-950">
-                                    {{ $request->name }}
-                                </h3>
+{{-- ================================================================
+    REQUEST LIST
+================================================================= --}}
 
-                                <p class="mt-1 text-sm text-stone-500">
+@if ($requests->isEmpty())
+
+    {{-- EMPTY STATE --}}
+
+    <section
+        class="overflow-hidden rounded-xl
+               border border-stone-200
+               bg-white shadow-sm"
+    >
+
+        <div
+            class="flex min-h-[320px]
+                   flex-col items-center
+                   justify-center
+                   px-6 py-12
+                   text-center"
+        >
+
+            <div
+                class="flex h-16 w-16
+                       items-center justify-center
+                       rounded-full
+                       bg-[#edf6ef]"
+            >
+
+                <svg
+                    class="h-7 w-7 text-[#3f7650]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.8"
+                        d="M5 13l4 4L19 7"
+                    />
+                </svg>
+
+            </div>
+
+
+            <h2
+                class="mt-5 text-base
+                       font-semibold
+                       text-[#173e32]"
+            >
+                No pending requests
+            </h2>
+
+
+            <p
+                class="mt-1 max-w-md
+                       text-sm leading-6
+                       text-stone-500"
+            >
+                All membership requests have been reviewed.
+                New registration requests will appear here.
+            </p>
+
+        </div>
+
+    </section>
+
+@else
+
+    <section
+        class="overflow-hidden rounded-xl
+               border border-stone-200
+               bg-white shadow-sm"
+    >
+
+        {{-- SECTION HEADER --}}
+
+        <div
+            class="border-b border-stone-200
+                   bg-[#fcfcfa]
+                   px-5 py-4"
+        >
+
+            <div>
+
+                <h2
+                    class="text-sm font-semibold
+                           text-[#173e32]"
+                >
+                    Pending Membership Requests
+                </h2>
+
+                <p
+                    class="mt-1 text-xs
+                           text-stone-500"
+                >
+                    Review the applicant's organizational information
+                    before approving or rejecting the request.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {{-- REQUESTS --}}
+
+        <div class="divide-y divide-stone-100">
+
+            @foreach ($requests as $request)
+
+                <article
+                    class="p-5 transition
+                           hover:bg-[#fdfdfb]"
+                >
+
+                    <div
+                        class="flex flex-col
+                               gap-5
+                               lg:flex-row
+                               lg:items-center
+                               lg:justify-between"
+                    >
+
+                        {{-- =================================================
+                            APPLICANT INFORMATION
+                        ================================================== --}}
+
+                        <div
+                            class="flex min-w-0
+                                   items-start gap-4"
+                        >
+
+                            {{-- AVATAR --}}
+
+                            <div
+                                class="flex h-12 w-12
+                                       shrink-0
+                                       items-center
+                                       justify-center
+                                       rounded-full
+                                       bg-[#173e32]
+                                       text-sm
+                                       font-semibold
+                                       text-white"
+                            >
+                                {{ strtoupper(substr($request->name, 0, 1)) }}
+                            </div>
+
+
+                            {{-- DETAILS --}}
+
+                            <div class="min-w-0">
+
+                                <div
+                                    class="flex flex-wrap
+                                           items-center gap-2"
+                                >
+
+                                    <h3
+                                        class="text-base
+                                               font-semibold
+                                               text-[#173e32]"
+                                    >
+                                        {{ $request->name }}
+                                    </h3>
+
+                                    <span
+                                        class="rounded-full
+                                               bg-[#f5f1e7]
+                                               px-2.5 py-1
+                                               text-[11px]
+                                               font-medium
+                                               text-[#8d7130]"
+                                    >
+                                        Pending
+                                    </span>
+
+                                </div>
+
+
+                                <p
+                                    class="mt-1 break-all
+                                           text-sm
+                                           text-stone-500"
+                                >
                                     {{ $request->email }}
                                 </p>
 
-                                <div class="mt-4 flex flex-wrap gap-2">
 
-                                    <span class="rounded-full bg-stone-100
-                                                 px-3 py-1 text-xs font-medium
-                                                 capitalize text-stone-700">
-                                        {{ $request->organization_level }}
-                                    </span>
+                                {{-- ORGANIZATION DETAILS --}}
 
-                                    <span class="rounded-full bg-stone-100
-                                                 px-3 py-1 text-xs font-medium
-                                                 capitalize text-stone-700">
-                                        {{ str_replace('_', ' ', $request->position) }}
-                                    </span>
+                                <div
+                                    class="mt-4 flex
+                                           flex-wrap gap-2"
+                                >
 
-                                    @if ($request->vicariate)
-                                        <span class="rounded-full bg-stone-100
-                                                     px-3 py-1 text-xs font-medium
-                                                     text-stone-700">
-                                            {{ $request->vicariate }}
+                                    @if ($request->organization_level)
+
+                                        <span
+                                            class="inline-flex
+                                                   items-center
+                                                   rounded-lg
+                                                   border
+                                                   border-stone-200
+                                                   bg-stone-50
+                                                   px-3 py-1.5
+                                                   text-xs
+                                                   font-medium
+                                                   capitalize
+                                                   text-stone-600"
+                                        >
+                                            {{ str_replace('_', ' ', $request->organization_level) }}
                                         </span>
+
                                     @endif
 
+
+                                    @if ($request->position)
+
+                                        <span
+                                            class="inline-flex
+                                                   items-center
+                                                   rounded-lg
+                                                   border
+                                                   border-stone-200
+                                                   bg-stone-50
+                                                   px-3 py-1.5
+                                                   text-xs
+                                                   font-medium
+                                                   capitalize
+                                                   text-stone-600"
+                                        >
+                                            {{ str_replace('_', ' ', $request->position) }}
+                                        </span>
+
+                                    @endif
+
+
+                                    @if ($request->vicariate)
+
+                                        <span
+                                            class="inline-flex
+                                                   items-center
+                                                   rounded-lg
+                                                   border
+                                                   border-stone-200
+                                                   bg-stone-50
+                                                   px-3 py-1.5
+                                                   text-xs
+                                                   font-medium
+                                                   text-stone-600"
+                                        >
+                                            {{ $request->vicariate }}
+                                        </span>
+
+                                    @endif
+
+
                                     @if ($request->unit)
-                                        <span class="rounded-full bg-stone-100
-                                                     px-3 py-1 text-xs font-medium
-                                                     text-stone-700">
+
+                                        <span
+                                            class="inline-flex
+                                                   items-center
+                                                   rounded-lg
+                                                   border
+                                                   border-stone-200
+                                                   bg-stone-50
+                                                   px-3 py-1.5
+                                                   text-xs
+                                                   font-medium
+                                                   text-stone-600"
+                                        >
                                             {{ $request->unit }}
                                         </span>
+
                                     @endif
 
                                 </div>
 
                             </div>
 
-                            <div class="flex gap-3">
+                        </div>
 
-                                {{-- Approve --}}
-                                <form
-                                    method="POST"
-                                    action="{{ route(
-                                        'admin.account-requests.approve',
-                                        $request
-                                    ) }}"
+
+                        {{-- =================================================
+                            ACTIONS
+                        ================================================== --}}
+
+                        <div
+                            class="flex shrink-0
+                                   flex-col gap-2
+                                   sm:flex-row
+                                   lg:flex-col
+                                   xl:flex-row"
+                        >
+
+                            {{-- APPROVE --}}
+
+                            <form
+                                method="POST"
+                                action="{{ route(
+                                    'admin.account-requests.approve',
+                                    $request
+                                ) }}"
+                                onsubmit="return confirm(
+                                    'Approve this account request?'
+                                )"
+                            >
+
+                                @csrf
+                                @method('PATCH')
+
+                                <button
+                                    type="submit"
+                                    class="inline-flex
+                                           w-full
+                                           items-center
+                                           justify-center
+                                           gap-2
+                                           rounded-lg
+                                           border
+                                           border-[#bcd8c2]
+                                           bg-[#edf6ef]
+                                           px-4 py-2.5
+                                           text-sm
+                                           font-medium
+                                           text-[#356746]
+                                           transition
+                                           hover:border-[#a8cbaa]
+                                           hover:bg-[#e2f1e5]
+                                           focus:outline-none
+                                           focus:ring-2
+                                           focus:ring-[#8d7130]
+                                           focus:ring-offset-2"
                                 >
-                                    @csrf
-                                    @method('PATCH')
 
-                                    <button
-                                        type="submit"
-                                        class="rounded-lg bg-emerald-700
-                                               px-5 py-2.5 text-sm font-medium
-                                               text-white hover:bg-emerald-800"
+                                    <svg
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        aria-hidden="true"
                                     >
-                                        Approve
-                                    </button>
-                                </form>
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M5 13l4 4L19 7"
+                                        />
+                                    </svg>
 
-                                {{-- Reject --}}
-                                <form
-                                    method="POST"
-                                    action="{{ route(
-                                        'admin.account-requests.reject',
-                                        $request
-                                    ) }}"
+                                    Approve
+
+                                </button>
+
+                            </form>
+
+
+                            {{-- REJECT --}}
+
+                            <form
+                                method="POST"
+                                action="{{ route(
+                                    'admin.account-requests.reject',
+                                    $request
+                                ) }}"
+                                onsubmit="return confirm(
+                                    'Reject this account request? This will remove the pending request.'
+                                )"
+                            >
+
+                                @csrf
+                                @method('DELETE')
+
+                                <button
+                                    type="submit"
+                                    class="inline-flex
+                                           w-full
+                                           items-center
+                                           justify-center
+                                           gap-2
+                                           rounded-lg
+                                           border
+                                           border-red-200
+                                           bg-white
+                                           px-4 py-2.5
+                                           text-sm
+                                           font-medium
+                                           text-red-600
+                                           transition
+                                           hover:border-red-300
+                                           hover:bg-red-50
+                                           focus:outline-none
+                                           focus:ring-2
+                                           focus:ring-red-200
+                                           focus:ring-offset-2"
                                 >
-                                    @csrf
-                                    @method('DELETE')
 
-                                    <button
-                                        type="submit"
-                                        class="rounded-lg border border-red-200
-                                               px-5 py-2.5 text-sm font-medium
-                                               text-red-700 hover:bg-red-50"
+                                    <svg
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        aria-hidden="true"
                                     >
-                                        Reject
-                                    </button>
-                                </form>
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M6 6l12 12M18 6L6 18"
+                                        />
+                                    </svg>
 
-                            </div>
+                                    Reject
+
+                                </button>
+
+                            </form>
 
                         </div>
 
                     </div>
 
-                @endforeach
+                </article>
 
-            </div>
+            @endforeach
 
-        @endif
+        </div>
 
-    </main>
+    </section>
 
-</body>
+@endif
 
-</html>
+
+</div>
+
 @endsection
