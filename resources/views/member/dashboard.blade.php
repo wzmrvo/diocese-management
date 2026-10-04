@@ -31,7 +31,9 @@
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
         >
 
+            {{-- ===================================================== --}}
             {{-- SIDEBAR HEADER --}}
+            {{-- ===================================================== --}}
 
             <div class="shrink-0 px-6 pb-6 pt-7">
 
@@ -100,7 +102,9 @@
 
                 <div class="space-y-1">
 
+                    {{-- ================================================= --}}
                     {{-- DASHBOARD --}}
+                    {{-- ================================================= --}}
 
                     <a
                         href="{{ url('/member') }}"
@@ -130,7 +134,9 @@
                     </a>
 
 
+                    {{-- ================================================= --}}
                     {{-- MEETING RECORDS --}}
+                    {{-- ================================================= --}}
 
                     <a
                         href="#"
@@ -150,7 +156,7 @@
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="1.8"
-                                d="M7 3v4M17 3v4M4 9h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1zM8 13h3M8 17h6"
+                                d="M7 3v4M17 3v4M4 9h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011 1zM8 13h3M8 17h6"
                             />
 
                         </svg>
@@ -160,7 +166,9 @@
                     </a>
 
 
+                    {{-- ================================================= --}}
                     {{-- MINUTES --}}
+                    {{-- ================================================= --}}
 
                     <a
                         href="#"
@@ -190,10 +198,12 @@
                     </a>
 
 
-                    {{-- FINANCIAL REPORTS --}}
+                    {{-- ================================================= --}}
+                    {{-- FINANCE --}}
+                    {{-- ================================================= --}}
 
                     <a
-                        href="#"
+                        href="{{ route('finance.member') }}"
                         class="flex items-center gap-3 rounded-lg
                                px-4 py-3 text-sm text-white/85
                                transition hover:bg-white/10"
@@ -210,7 +220,39 @@
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="1.8"
-                                d="M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2zM9 8h6M9 12h6M9 16h3"
+                                d="M12 3v18M16.5 7.5h-6a2.5 2.5 0 000 5h3a2.5 2.5 0 010 5h-6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"
+                            />
+
+                        </svg>
+
+                        <span>Finance</span>
+
+                    </a>
+
+
+                    {{-- ================================================= --}}
+                    {{-- FINANCIAL REPORTS --}}
+                    {{-- ================================================= --}}
+
+                    <a
+                        href="{{ route('finance.member') }}"
+                        class="flex items-center gap-3 rounded-lg
+                               px-4 py-3 text-sm text-white/85
+                               transition hover:bg-white/10"
+                    >
+
+                        <svg
+                            class="h-5 w-5 text-[#e5c76b]"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.8"
+                                d="M6 3h9l4 4v14H6V3zM14 3v5h5M9 12h6M9 16h6M9 8h2"
                             />
 
                         </svg>
@@ -220,7 +262,41 @@
                     </a>
 
 
+                    {{-- ================================================= --}}
+                    {{-- PAYMENT REQUEST --}}
+                    {{-- ================================================= --}}
+
+                    <a
+                        href="{{ route('finance.member') }}"
+                        class="flex items-center gap-3 rounded-lg
+                               px-4 py-3 text-sm text-white/85
+                               transition hover:bg-white/10"
+                    >
+
+                        <svg
+                            class="h-5 w-5 text-[#e5c76b]"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.8"
+                                d="M12 5v14M5 12h14M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"
+                            />
+
+                        </svg>
+
+                        <span>Payment Request</span>
+
+                    </a>
+
+
+                    {{-- ================================================= --}}
                     {{-- MY UNIT --}}
+                    {{-- ================================================= --}}
 
                     <a
                         href="#"
@@ -250,7 +326,9 @@
                     </a>
 
 
+                    {{-- ================================================= --}}
                     {{-- NOTIFICATIONS --}}
+                    {{-- ================================================= --}}
 
                     <a
                         href="#"
@@ -412,8 +490,6 @@
                         </button>
 
 
-                        {{-- DIVIDER --}}
-
                         <div class="h-8 w-px bg-slate-200"></div>
 
 
@@ -423,8 +499,6 @@
                             x-data="{ profileOpen: false }"
                             class="relative"
                         >
-
-                            {{-- PROFILE BUTTON --}}
 
                             <button
                                 type="button"
@@ -437,8 +511,6 @@
                                        hover:bg-blue-50"
                             >
 
-                                {{-- PROFILE ICON --}}
-
                                 <div
                                     class="flex h-10 w-10
                                            items-center justify-center
@@ -449,9 +521,7 @@
                                            text-white shadow-sm"
                                 >
 
-                                    <span
-                                        class="text-sm font-semibold"
-                                    >
+                                    <span class="text-sm font-semibold">
                                         {{ strtoupper(
                                             substr(
                                                 Auth::user()->first_name
@@ -465,23 +535,15 @@
 
                                 </div>
 
-
-                                {{-- MY PROFILE --}}
-
                                 <span class="hidden sm:block">
                                     My Profile
                                 </span>
-
-
-                                {{-- ARROW --}}
 
                                 <svg
                                     class="hidden h-4 w-4
                                            text-slate-400
                                            transition sm:block"
-                                    :class="profileOpen
-                                        ? 'rotate-180'
-                                        : ''"
+                                    :class="profileOpen ? 'rotate-180' : ''"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -499,18 +561,11 @@
                             </button>
 
 
-                            {{-- ================================================= --}}
                             {{-- PROFILE DROPDOWN --}}
-                            {{-- ================================================= --}}
 
                             <div
                                 x-show="profileOpen"
-                                x-transition:enter="transition ease-out duration-150"
-                                x-transition:enter-start="opacity-0 scale-95 -translate-y-1"
-                                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                                x-transition:leave="transition ease-in duration-100"
-                                x-transition:leave-start="opacity-100 scale-100"
-                                x-transition:leave-end="opacity-0 scale-95"
+                                x-transition
                                 @click.outside="profileOpen = false"
                                 class="absolute right-0 top-full z-[100]
                                        mt-3 w-80 overflow-hidden
@@ -533,8 +588,6 @@
                                                items-center text-center"
                                     >
 
-                                        {{-- CENTER PROFILE ICON --}}
-
                                         <div
                                             class="flex h-16 w-16
                                                    items-center
@@ -546,9 +599,7 @@
                                                    text-white shadow-md"
                                         >
 
-                                            <span
-                                                class="text-xl font-bold"
-                                            >
+                                            <span class="text-xl font-bold">
                                                 {{ strtoupper(
                                                     substr(
                                                         Auth::user()->first_name
@@ -562,9 +613,6 @@
 
                                         </div>
 
-
-                                        {{-- NAME --}}
-
                                         <p
                                             class="mt-3 text-base
                                                    font-semibold
@@ -573,9 +621,6 @@
                                             {{ Auth::user()->first_name }}
                                             {{ Auth::user()->last_name }}
                                         </p>
-
-
-                                        {{-- USERNAME --}}
 
                                         <p
                                             class="mt-0.5 text-xs
@@ -589,9 +634,6 @@
                                                 )
                                             ) }}
                                         </p>
-
-
-                                        {{-- ROLE --}}
 
                                         <span
                                             class="mt-2 inline-flex
@@ -615,16 +657,11 @@
                                 </div>
 
 
-                                {{-- ================================================= --}}
                                 {{-- PROFILE OPTIONS --}}
-                                {{-- ================================================= --}}
 
                                 <div class="p-2">
 
-
-                                    {{-- ================================================= --}}
                                     {{-- PROFILE --}}
-                                    {{-- ================================================= --}}
 
                                     <a
                                         href="{{ url('/settings/profile') }}"
@@ -669,7 +706,6 @@
 
                                         </div>
 
-
                                         <div>
 
                                             <p
@@ -691,9 +727,7 @@
                                     </a>
 
 
-                                    {{-- ================================================= --}}
                                     {{-- SECURITY --}}
-                                    {{-- ================================================= --}}
 
                                     <a
                                         href="{{ url('/settings/security') }}"
@@ -731,7 +765,6 @@
 
                                         </div>
 
-
                                         <div>
 
                                             <p
@@ -753,9 +786,7 @@
                                     </a>
 
 
-                                    {{-- ================================================= --}}
                                     {{-- ORGANIZATION --}}
-                                    {{-- ================================================= --}}
 
                                     <a
                                         href="{{ url('/settings/organization') }}"
@@ -793,7 +824,6 @@
 
                                         </div>
 
-
                                         <div>
 
                                             <p
@@ -815,9 +845,7 @@
                                     </a>
 
 
-                                    {{-- ================================================= --}}
                                     {{-- ACCOUNT --}}
-                                    {{-- ================================================= --}}
 
                                     <a
                                         href="{{ url('/settings/account') }}"
@@ -861,7 +889,6 @@
 
                                         </div>
 
-
                                         <div>
 
                                             <p
@@ -885,9 +912,7 @@
                                 </div>
 
 
-                                {{-- ================================================= --}}
                                 {{-- SIGN OUT --}}
-                                {{-- ================================================= --}}
 
                                 <div
                                     class="border-t border-blue-100 p-2"
@@ -937,7 +962,6 @@
 
                                             </div>
 
-
                                             <div>
 
                                                 <p class="font-medium">
@@ -979,7 +1003,9 @@
                        px-5 py-7 sm:px-7 lg:px-8"
             >
 
+                {{-- ===================================================== --}}
                 {{-- WELCOME HERO --}}
+                {{-- ===================================================== --}}
 
                 <section
                     class="relative mb-5 min-h-[175px]
@@ -996,7 +1022,6 @@
                                to-[#fff9e7]"
                     ></div>
 
-
                     <div
                         class="absolute -right-10 -top-16
                                h-64 w-64 rounded-full
@@ -1004,14 +1029,12 @@
                                border-[#d4af37]/10"
                     ></div>
 
-
                     <div
                         class="absolute -right-5 -bottom-20
                                h-52 w-52 rounded-full
                                border-[25px]
                                border-[#0b2e6f]/10"
                     ></div>
-
 
                     <div
                         class="relative z-10 flex h-full
@@ -1065,18 +1088,103 @@
                 </section>
 
 
+                {{-- ===================================================== --}}
+                {{-- FINANCE NOTICE --}}
+                {{-- ===================================================== --}}
+
+                <section
+                    class="mb-5 overflow-hidden rounded-xl
+                           border border-[#ead99d]
+                           bg-[#fffaf0] shadow-sm"
+                >
+
+                    <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+
+                        <div class="flex items-start gap-4">
+
+                            <div
+                                class="flex h-11 w-11 shrink-0
+                                       items-center justify-center
+                                       rounded-full bg-[#f9e9b9]
+                                       text-[#a37b0b]"
+                            >
+
+                                <svg
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.8"
+                                        d="M12 8v4l2.5 1.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                            <div>
+
+                                <p
+                                    class="text-sm font-semibold
+                                           text-[#7d5f08]"
+                                >
+                                    Physical payment recording
+                                </p>
+
+                                <p
+                                    class="mt-1 text-xs leading-5
+                                           text-slate-600"
+                                >
+                                    Payments are made face-to-face.
+                                    Submit a payment request after paying,
+                                    then wait for your Treasurer to verify and approve it.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="{{ route('finance.member') }}"
+                            class="inline-flex shrink-0 items-center
+                                   justify-center rounded-lg
+                                   bg-[#0b2e6f] px-4 py-2.5
+                                   text-xs font-semibold text-white
+                                   transition hover:bg-[#09275d]"
+                        >
+                            Open Finance
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                {{-- ===================================================== --}}
                 {{-- DASHBOARD GRID --}}
+                {{-- ===================================================== --}}
 
                 <div
                     class="grid gap-5
                            xl:grid-cols-[minmax(0,1fr)_360px]"
                 >
 
+                    {{-- ================================================= --}}
                     {{-- LEFT COLUMN --}}
+                    {{-- ================================================= --}}
 
                     <div class="min-w-0">
 
+
+                        {{-- ================================================= --}}
                         {{-- QUICK INFORMATION --}}
+                        {{-- ================================================= --}}
 
                         <div
                             class="grid gap-3
@@ -1208,13 +1316,18 @@
                             </div>
 
 
+                            {{-- ================================================= --}}
                             {{-- FINANCIAL REPORT --}}
+                            {{-- ================================================= --}}
 
-                            <div
-                                class="rounded-xl
+                            <a
+                                href="{{ route('finance.member') }}"
+                                class="group rounded-xl
                                        border border-[#ead99d]
                                        bg-[#fffaf0]
-                                       p-5 shadow-sm"
+                                       p-5 shadow-sm
+                                       transition hover:-translate-y-0.5
+                                       hover:shadow-md"
                             >
 
                                 <div
@@ -1237,7 +1350,7 @@
                                             stroke-linecap="round"
                                             stroke-linejoin="round"
                                             stroke-width="1.8"
-                                            d="M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2zM9 8h6M9 12h6M9 16h3"
+                                            d="M12 3v18M16.5 7.5h-6a2.5 2.5 0 000 5h3a2.5 2.5 0 010 5h-6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"
                                         />
 
                                     </svg>
@@ -1257,22 +1370,194 @@
                                            font-semibold
                                            text-slate-800"
                                 >
-                                    No reports yet
+                                    View finance
                                 </p>
 
                                 <p
                                     class="mt-2 text-xs
                                            text-slate-500"
                                 >
-                                    Published reports will appear here.
+                                    View dues, payment records,
+                                    reports, and transparency information.
                                 </p>
 
-                            </div>
+                                <p
+                                    class="mt-3 text-xs font-semibold
+                                           text-[#a37b0b]
+                                           group-hover:underline"
+                                >
+                                    Open financial dashboar →
+                                </p>
+
+                            </a>
 
                         </div>
 
 
+                        {{-- ================================================= --}}
+                        {{-- PAYMENT STATUS --}}
+                        {{-- ================================================= --}}
+
+                        <section
+                            class="mt-5 overflow-hidden
+                                   rounded-xl border
+                                   border-slate-200
+                                   bg-white shadow-sm"
+                        >
+
+                            <div
+                                class="flex flex-col gap-2
+                                       border-b border-slate-200
+                                       px-5 py-4
+                                       sm:flex-row sm:items-center
+                                       sm:justify-between"
+                            >
+
+                                <div>
+
+                                    <h3
+                                        class="text-sm font-semibold
+                                               text-[#0b2e6f]"
+                                    >
+                                        Payment Request Status
+                                    </h3>
+
+                                    <p
+                                        class="mt-1 text-xs
+                                               text-slate-500"
+                                    >
+                                        Payment confirmations submitted
+                                        for Treasurer approval.
+                                    </p>
+
+                                </div>
+
+                                <a
+                                    href="{{ route('finance.member') }}"
+                                    class="text-xs font-semibold
+                                           text-[#0b2e6f]
+                                           hover:underline"
+                                >
+                                    View finance →
+                                </a>
+
+                            </div>
+
+
+                            <div
+                                class="grid gap-3 p-5
+                                       sm:grid-cols-3"
+                            >
+
+                                {{-- PENDING --}}
+
+                                <div
+                                    class="rounded-lg border
+                                           border-amber-200
+                                           bg-amber-50 p-4"
+                                >
+
+                                    <p
+                                        class="text-[11px] font-medium
+                                               uppercase tracking-wide
+                                               text-amber-700"
+                                    >
+                                        Pending
+                                    </p>
+
+                                    <p
+                                        class="mt-1 text-2xl
+                                               font-semibold
+                                               text-amber-800"
+                                    >
+                                        0
+                                    </p>
+
+                                    <p
+                                        class="mt-1 text-[11px]
+                                               text-amber-700/70"
+                                    >
+                                        Awaiting Treasurer approval
+                                    </p>
+
+                                </div>
+
+
+                                {{-- APPROVED --}}
+
+                                <div
+                                    class="rounded-lg border
+                                           border-emerald-200
+                                           bg-emerald-50 p-4"
+                                >
+
+                                    <p
+                                        class="text-[11px] font-medium
+                                               uppercase tracking-wide
+                                               text-emerald-700"
+                                    >
+                                        Approved
+                                    </p>
+
+                                    <p
+                                        class="mt-1 text-2xl
+                                               font-semibold
+                                               text-emerald-800"
+                                    >
+                                        0
+                                    </p>
+
+                                    <p
+                                        class="mt-1 text-[11px]
+                                               text-emerald-700/70"
+                                    >
+                                        Verified payments
+                                    </p>
+
+                                </div>
+
+
+                                {{-- REJECTED --}}
+
+                                <div
+                                    class="rounded-lg border
+                                           border-red-200
+                                           bg-red-50 p-4"
+                                >
+
+                                    <p
+                                        class="text-[11px] font-medium
+                                               uppercase tracking-wide
+                                               text-red-700"
+                                    >
+                                        Rejected
+                                    </p>
+
+                                    <p
+                                        class="mt-1 text-2xl
+                                               font-semibold
+                                               text-red-800"
+                                    >
+                                        0
+                                    </p>
+
+                                    <p
+                                        class="mt-1 text-[11px]
+                                               text-red-700/70"
+                                    >
+                                        Requests needing attention
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+                        {{-- ================================================= --}}
                         {{-- RECENT MEETINGS --}}
+                        {{-- ================================================= --}}
 
                         <section
                             class="mt-5 overflow-hidden
@@ -1395,7 +1680,9 @@
                         </section>
 
 
+                        {{-- ================================================= --}}
                         {{-- DOCUMENTS --}}
+                        {{-- ================================================= --}}
 
                         <div
                             class="mt-5 grid gap-5
@@ -1490,7 +1777,7 @@
                                     </h3>
 
                                     <a
-                                        href="#"
+                                        href="{{ route('finance.member') }}"
                                         class="text-xs font-medium
                                                text-[#0b2e6f]"
                                     >
@@ -1525,6 +1812,15 @@
                                         Published financial reports will appear here.
                                     </p>
 
+                                    <a
+                                        href="{{ route('finance.member') }}"
+                                        class="mt-4 text-xs font-semibold
+                                               text-[#a37b0b]
+                                               hover:underline"
+                                    >
+                                        Open Financial Reports →
+                                    </a>
+
                                 </div>
 
                             </section>
@@ -1541,7 +1837,228 @@
                     <div class="space-y-5">
 
 
+                        {{-- ================================================= --}}
+                        {{-- FINANCE QUICK ACCESS --}}
+                        {{-- ================================================= --}}
+
+                        <section
+                            class="overflow-hidden rounded-xl
+                                   border border-[#ead99d]
+                                   bg-white shadow-sm"
+                        >
+
+                            <div
+                                class="border-b border-[#ead99d]
+                                       bg-[#fffaf0]
+                                       px-5 py-4"
+                            >
+
+                                <h3
+                                    class="text-sm font-semibold
+                                           text-[#0b2e6f]"
+                                >
+                                    Finance
+                                </h3>
+
+                                <p
+                                    class="mt-1 text-[11px]
+                                           text-slate-500"
+                                >
+                                    Your financial records and payment requests
+                                </p>
+
+                            </div>
+
+
+                            <div class="space-y-2 p-4">
+
+                                {{-- REQUEST PAYMENT --}}
+
+                                <a
+                                    href="{{ route('finance.member') }}"
+                                    class="flex items-center gap-3
+                                           rounded-lg border
+                                           border-slate-200
+                                           px-4 py-3
+                                           transition
+                                           hover:border-[#d4af37]
+                                           hover:bg-[#fffaf0]"
+                                >
+
+                                    <div
+                                        class="flex h-9 w-9
+                                               items-center justify-center
+                                               rounded-lg
+                                               bg-[#fff8e5]
+                                               text-[#a37b0b]"
+                                    >
+
+                                        <svg
+                                            class="h-5 w-5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.8"
+                                                d="M12 5v14M5 12h14"
+                                            />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <div class="min-w-0">
+
+                                        <p
+                                            class="text-sm font-medium
+                                                   text-slate-700"
+                                        >
+                                            Payment Request
+                                        </p>
+
+                                        <p
+                                            class="text-[11px]
+                                                   text-slate-400"
+                                        >
+                                            Record a physical payment
+                                        </p>
+
+                                    </div>
+
+                                </a>
+
+
+                                {{-- DUES --}}
+
+                                <a
+                                    href="{{ route('finance.member') }}"
+                                    class="flex items-center gap-3
+                                           rounded-lg border
+                                           border-slate-200
+                                           px-4 py-3
+                                           transition
+                                           hover:border-blue-200
+                                           hover:bg-blue-50"
+                                >
+
+                                    <div
+                                        class="flex h-9 w-9
+                                               items-center justify-center
+                                               rounded-lg
+                                               bg-blue-50
+                                               text-[#123B8F]"
+                                    >
+
+                                        <svg
+                                            class="h-5 w-5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.8"
+                                                d="M12 3v18M16.5 7.5h-6a2.5 2.5 0 000 5h3a2.5 2.5 0 010 5h-6"
+                                            />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <div class="min-w-0">
+
+                                        <p
+                                            class="text-sm font-medium
+                                                   text-slate-700"
+                                        >
+                                            My Dues
+                                        </p>
+
+                                        <p
+                                            class="text-[11px]
+                                                   text-slate-400"
+                                        >
+                                            Monthly and yearly dues
+                                        </p>
+
+                                    </div>
+
+                                </a>
+
+
+                                {{-- REPORTS --}}
+
+                                <a
+                                    href="{{ route('finance.member') }}"
+                                    class="flex items-center gap-3
+                                           rounded-lg border
+                                           border-slate-200
+                                           px-4 py-3
+                                           transition
+                                           hover:border-blue-200
+                                           hover:bg-blue-50"
+                                >
+
+                                    <div
+                                        class="flex h-9 w-9
+                                               items-center justify-center
+                                               rounded-lg
+                                               bg-blue-50
+                                               text-[#123B8F]"
+                                    >
+
+                                        <svg
+                                            class="h-5 w-5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.8"
+                                                d="M6 3h9l4 4v14H6V3zM14 3v5h5M9 12h6M9 16h6"
+                                            />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <div class="min-w-0">
+
+                                        <p
+                                            class="text-sm font-medium
+                                                   text-slate-700"
+                                        >
+                                            Financial Reports
+                                        </p>
+
+                                        <p
+                                            class="text-[11px]
+                                                   text-slate-400"
+                                        >
+                                            Organization transparency
+                                        </p>
+
+                                    </div>
+
+                                </a>
+
+                            </div>
+
+                        </section>
+
+
+                        {{-- ================================================= --}}
                         {{-- NOTIFICATIONS --}}
+                        {{-- ================================================= --}}
 
                         <section
                             class="rounded-xl border
@@ -1552,8 +2069,7 @@
                             <div
                                 class="flex items-center
                                        justify-between
-                                       border-b
-                                       border-slate-200
+                                       border-b border-slate-200
                                        px-5 py-4"
                             >
 
@@ -1628,7 +2144,9 @@
                         </section>
 
 
+                        {{-- ================================================= --}}
                         {{-- MY UNIT --}}
+                        {{-- ================================================= --}}
 
                         <section
                             class="rounded-xl border
@@ -1708,7 +2226,9 @@
                         </section>
 
 
+                        {{-- ================================================= --}}
                         {{-- QUICK ACTIONS --}}
+                        {{-- ================================================= --}}
 
                         <section
                             class="rounded-xl border
@@ -1790,12 +2310,47 @@
                                 </a>
 
 
+                                {{-- FINANCIAL REPORTS --}}
+
                                 <a
-                                    href="#"
+                                    href="{{ route('finance.member') }}"
                                     class="flex items-center
                                            justify-between
                                            rounded-lg
-                                           border border-slate-200
+                                           border border-[#ead99d]
+                                           bg-[#fffaf0]
+                                           px-4 py-3
+                                           transition
+                                           hover:border-[#d4af37]"
+                                >
+
+                                    <span
+                                        class="text-sm
+                                               font-medium
+                                               text-slate-700"
+                                    >
+                                        View Financial Reports
+                                    </span>
+
+                                    <span
+                                        class="text-lg
+                                               text-[#a37b0b]"
+                                    >
+                                        ›
+                                    </span>
+
+                                </a>
+
+
+                                {{-- PAYMENT REQUEST --}}
+
+                                <a
+                                    href="{{ route('finance.member') }}"
+                                    class="flex items-center
+                                           justify-between
+                                           rounded-lg
+                                           border border-blue-100
+                                           bg-blue-50/50
                                            px-4 py-3
                                            transition
                                            hover:border-blue-200
@@ -1804,9 +2359,10 @@
 
                                     <span
                                         class="text-sm
+                                               font-medium
                                                text-slate-700"
                                     >
-                                        View Financial Reports
+                                        Submit Payment Request
                                     </span>
 
                                     <span
@@ -1823,7 +2379,9 @@
                         </section>
 
 
+                        {{-- ================================================= --}}
                         {{-- ACCOUNT INFORMATION --}}
+                        {{-- ================================================= --}}
 
                         <section
                             class="rounded-xl border
@@ -1934,7 +2492,9 @@
                 </div>
 
 
+                {{-- ========================================================= --}}
                 {{-- FOOTER --}}
+                {{-- ========================================================= --}}
 
                 <footer class="mt-8 pb-4 text-center">
 

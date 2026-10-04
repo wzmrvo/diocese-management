@@ -15,7 +15,7 @@ class AdminUserSeeder extends Seeder
             ],
             [
                 'name' => 'System Administrator',
-                'password' => 'Admin123!',
+                'password' => '12345678',
                 'role' => 'admin',
                 'status' => 'approved',
 

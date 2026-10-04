@@ -47,22 +47,14 @@ Route::post('/register', [RegisterController::class, 'store'])
 |--------------------------------------------------------------------------
 | AUTHENTICATED ROUTES
 |--------------------------------------------------------------------------
-|
-| These routes are available to authenticated users.
-| Both Admin and Member accounts can access the settings pages.
-|
 */
 
 Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | OLD /PROFILE ROUTES
+    | PROFILE
     |--------------------------------------------------------------------------
-    |
-    | These are kept so existing Breeze links do not break.
-    | The new settings system is separate.
-    |
     */
 
     Route::get('/profile', [ProfileController::class, 'edit'])
@@ -79,20 +71,6 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     | SETTINGS
     |--------------------------------------------------------------------------
-    |
-    | IMPORTANT:
-    | These are the ONLY settings route names used by the settings UI.
-    |
-    | settings
-    | settings.profile
-    | settings.profile.update
-    | settings.security
-    | settings.password.update
-    | settings.organization
-    | settings.account
-    |
-    | They work for BOTH Admin and Member users.
-    |
     */
 
     Route::get('/settings', [
@@ -179,6 +157,69 @@ Route::middleware('auth')->group(function () {
     Route::get('/member/profile', function () {
         return view('member.profile');
     })->name('member.profile');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | MEMBER FINANCE
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/member/finance', function () {
+        return view('finance.member');
+    })->name('finance.member');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DIOCESAN TREASURER FINANCE
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/treasurer/finance', function () {
+        return view('finance.treasurer-dashboard');
+    })->name('finance.treasurer');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | UNIT TREASURER
+    |--------------------------------------------------------------------------
+    |
+    | Dashboard:
+    | /treasurer/unit
+    |
+    | Dues:
+    | /treasurer/unit/dues
+    |
+    | Blade files:
+    | resources/views/treasurer/unit/dashboard.blade.php
+    | resources/views/treasurer/unit/unit-dues.blade.php
+    |
+    */
+
+    Route::get('/treasurer/unit', function () {
+        return view('treasurer.unit.dashboard');
+    })->name('treasurer.unit.dashboard');
+
+    Route::get('/treasurer/unit/dues', function () {
+        return view('treasurer.unit.unit-dues');
+    })->name('treasurer.unit.dues');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ADMIN FINANCE
+    |--------------------------------------------------------------------------
+    */
+
+    Route::middleware('admin')->group(function () {
+
+        Route::get('/admin/finance', function () {
+            return view('finance.admin-dashboard');
+        })->name('finance.admin');
+
+    });
 
 });
 

@@ -530,44 +530,6 @@
         </section>
 
 
-        {{-- INFORMATION NOTE --}}
-
-        <div class="mt-6 rounded-xl border border-[#D4AF37]/40
-                    bg-[#FFFDF5] p-5">
-
-            <div class="flex gap-3">
-
-                <div class="mt-0.5 text-[#B08D1A]">
-
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                    </svg>
-
-                </div>
-
-                <p class="text-sm leading-6 text-slate-600">
-
-                    Your Vicariate and Unit / Parish information is displayed
-                    directly from your CWL account's organizational assignment.
-                    It is not hardcoded into this page.
-
-                </p>
-
-            </div>
-
-        </div>
-
-
         <footer class="mt-8 pb-4 text-center">
 
             <p class="text-[11px] text-slate-400">
